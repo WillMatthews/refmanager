@@ -14,12 +14,12 @@ A more usable alternative to EndNote, made for AgriCoat Ltd as FOSS, to organise
 * make search page work with DB!
 
 ### Todos:
-- [] "Add Record" page (suggest successor of max of keys)
-- [] "Edit Record" page (remove record)
-- [] "Search"
+- [ ] "Add Record" page (suggest successor of max of keys)
+- [ ] "Edit Record" page (remove record)
+- [ ] "Search"
   - [x] Sort by record number, date (sort by author?)
-  - [] Search by keyword, abstracts, titles, record number and/or author
-- [] 'errors' page
-  - [] highlight missing PDFs
-  - [] highlight spelling errors?
-  - [] highlight missing record numbers
+  - [ ] Search by keyword, abstracts, titles, record number and/or author
+- [ ] 'errors' page
+  - [ ] highlight missing PDFs
+  - [ ] highlight spelling errors?
+  - [ ] highlight missing record numbers
