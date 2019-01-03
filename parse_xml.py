@@ -1,20 +1,74 @@
 #!/usr/bin/python3
 
+# script to parse an EndNote XML database file, and populate a mysql database with the contents
+
 import xml.etree.ElementTree as Etree
+#from termcolor import colored
+
+nums = []
+count = 0;
+dictList = []
+stdDict = {"title":"","author":"","key":"","year":"","abstract":"","keyword":"","volume":"","number":"","pages":"","url":"","comments":""}
 
 root = Etree.parse('old_database.xml').getroot()
 
-nums = []
-
-count = 0;
 for records in root:
     for record in records:
+        newdict = stdDict.copy()
+
+        #print("\n\n")
         for element in record:
-            if element.tag == 'foreign-keys':
-                for part in element:
-                    nums.append(int(part.text))
+            #print(element.tag)
+            workingtext = ""
+            ispresent = False
+
+            #print(colored(element.tag,"green"))
+            #if element.text is not None:
+            #    print("    " + element.text)
+
+            for part in element:
+                if part.text is not None:
+                    title = element.tag
+                    workingtext += part.text + " "
+                    ispresent = True
+
+                else:
+                    for subpart in part:
+
+                        #print(colored(subpart.tag,"blue"))
+                        if subpart.text is not None:
+                            title = part.tag
+                            workingtext += subpart.text + " "
+                            ispresent = True
+                        else:
+                            for subsubpart in subpart:
+                                title = subpart.tag
+                                workingtext += subsubpart.text + " "
+                                ispresent = True
+
+            if ispresent:
+                if title == "secondary-title":
+                    title = "title"
+                elif title == "foreign-keys":
+                    title = "key"
+
+                #print(colored(title,"red"))
+                #print("     " + workingtext)
+
+                newdict[title] = workingtext.replace("\r","n").strip()
 
         count += 1
+
+
+        dictList.append(newdict)
+
+
+for d in dictList:
+    print(d)
+    print("\n\n")
+    d["key"] = int(d["key"])
+    nums.append(d["key"])
+
 
 nums.sort()
 
@@ -26,3 +80,4 @@ for i in range(1,max(nums)):
 
 print("\n")
 print(str(count) + " Entries found in DB file")
+
