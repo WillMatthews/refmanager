@@ -69,22 +69,22 @@ body,td,th {
                               <table width="165" align="center">
                                 <tr>
                                   <td width="157" style="text-align: left"><label>
-                                    <input name="order" type="radio" id="order_0" value="fd"<?php if($_GET['order'] == "kd" OR !$_GET['order']) { print ' checked="checked"'; } ?>>
+                                    <input name="order" type="radio" id="order_0" value="kd"<?php if($_GET['order'] == "kd" OR !$_GET['order']) { print ' checked="checked"'; } ?>>
                                     Record No Descending</label></td>
                                 </tr>
                                 <tr>
                                   <td style="text-align: left"><label>
-                                    <input type="radio" name="order" value="fa" id="order_1"<?php if($_GET['order'] == "ka") { print ' checked="checked"'; } ?>>
+                                    <input type="radio" name="order" value="ka" id="order_1"<?php if($_GET['order'] == "ka") { print ' checked="checked"'; } ?>>
                                     Record No Ascending</label></td>
                                 </tr>
                                 <tr>
                                   <td style="text-align: left"><label>
-                                    <input name="order" type="radio" id="order_2" value="ld"<?php if($_GET['order'] == "dd") { print ' checked="checked"'; } ?>>
+                                    <input name="order" type="radio" id="order_2" value="dd"<?php if($_GET['order'] == "dd") { print ' checked="checked"'; } ?>>
                                     Date Descending</label></td>
                                 </tr>
                                 <tr>
                                   <td style="text-align: left"><label>
-                                    <input name="order" type="radio" id="order_2" value="ld"<?php if($_GET['order'] == "da") { print ' checked="checked"'; } ?>>
+                                    <input name="order" type="radio" id="order_3" value="da"<?php if($_GET['order'] == "da") { print ' checked="checked"'; } ?>>
                                     Date Ascending</label></td>
                                 </tr>
                               </table>
@@ -156,7 +156,7 @@ body,td,th {
                 } elseif($order == "dd"){
                         $ordercode = "date DESC";
                 } elseif($order == "da"){
-                        $ordercode = "date ASC"
+                        $ordercode = "date ASC";
                 } else {
                     // Catch people fiddling and tell them to back down.
                     echo "<br> <b> STOP TRYING TO BREAK OUR STUFF! </b> <br>";
