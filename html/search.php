@@ -110,21 +110,21 @@ body,td,th {
 
 
     // SQL VARS
-    $dbhost="localhost";
-    $user="test";
-    $pass="test";
-    $dbname="documents";
+    $dbhost="192.168.1.6";
+    $user="will";
+    $pass="will";
+    $dbname="agricoat";
     
     // Start Timer
     $time_start=microtime(true);
 
     //SQL connection launch. If Error output Error Message
-    //$con=mysqli_connect($dbhost,$user,$pass,$dbname);//code hangs here???
-    $con = ""; // temporary
+    $con=mysqli_connect($dbhost,$user,$pass,$dbname);//code hangs here???
+    //$con = ""; // temporary
 
     if(!$con) {
         echo " ERROR. Could not connect to database. Firewall problem?";
-        //echo "<br>".mysqli_connect_errno() . ":" . mysqli_connect_error();
+        echo "<br>".mysqli_connect_errno() . ":" . mysqli_connect_error();
     } else {
         echo "DB connection success";
     
@@ -171,7 +171,7 @@ body,td,th {
                 }
 
                 // Generate SQL Query
-                $sql_SQRY="SELECT * FROM posts WHERE (`content` LIKE '%".$query."%')".$numstat." ORDER BY ".$ordercode;
+                $sql_SQRY="SELECT * FROM library WHERE (keywords OR title OR abstract OR key OR author LIKE '%".$query."%')".$numstat." ORDER BY ".$ordercode;
 
                 // Runs SQL Query
                 $result=mysqli_query($con,$sql_SQRY);
