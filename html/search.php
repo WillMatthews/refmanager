@@ -126,7 +126,6 @@ body,td,th {
         echo " ERROR. Could not connect to database. Firewall problem?";
         echo "<br>".mysqli_connect_errno() . ":" . mysqli_connect_error();
     } else {
-        echo "DB connection success";
     
         // gets _GET info
         $query=$_GET['query'];
@@ -134,7 +133,7 @@ body,td,th {
   
         // $query max and min length - check this
         $max_length = 30;
-        $min_length = 2;
+        $min_length = 0;
     
         // run only if query exists (not on page load)
         if($query){
@@ -150,13 +149,13 @@ body,td,th {
 
                 // User Order Request data - manipulates SQL Search
                 if($order == "kd"){
-                    $ordercode = "key DESC";
+                    $ordercode = "`key` DESC";
                 } elseif($order == "ka"){
-                    $ordercode = "key ASC";
+                    $ordercode = "`key` ASC";
                 } elseif($order == "dd"){
-                        $ordercode = "date DESC";
+                        $ordercode = "`year` DESC";
                 } elseif($order == "da"){
-                        $ordercode = "date ASC";
+                        $ordercode = "`year` ASC";
                 } else {
                     // Catch people fiddling and tell them to back down.
                     echo "<br> <b> STOP TRYING TO BREAK OUR STUFF! </b> <br>";
@@ -170,8 +169,32 @@ body,td,th {
                     $numstat="";
                 }
 
-                // Generate SQL Query
-                $sql_SQRY="SELECT * FROM library WHERE (keywords OR title OR abstract OR key OR author LIKE '%".$query."%')".$numstat." ORDER BY ".$ordercode;
+
+                // S E L E C T   S I N G L E   W O R D   Q U E R Y
+                // ===========================================================
+                $query = "'%" . $query . "%'";
+                $sql_SQRY="SELECT * FROM `library` WHERE (`keywords` LIKE " . $query . " OR `title` LIKE " . $query . " OR `abstract` LIKE " . $query . " OR `key` LIKE " . $query . " OR `author` LIKE " . $query . " ) ORDER BY " . $ordercode . ";";
+
+
+
+                // S E L E C T   A L L   Q U E R Y
+                // ===========================================================
+                // $query = "'%" . $query . "%'";
+                // $sql_SQRY="SELECT * FROM `library`;";
+
+
+
+                // N E W    F U L L T E X T    Q U E R Y
+                // ===========================================================
+                // $query = "'" . $query . "'";
+                // $sql_SQRY = "SELECT *,
+                //                 MATCH (`keywords`,`abstract`,`title`,`author`,`key`) AGAINST (" . $query . ") AS relevance,
+                //                 MATCH (`title`) AGAINST (" . $query . ") AS title_relevance
+                //             FROM `library`
+                //             WHERE MATCH (`keywords`,`abstract`,`title`,`author`,`key`) AGAINST (" . $query . ")
+                //             ORDER BY title_relevance DESC, relevance DESC";
+                //
+
 
                 // Runs SQL Query
                 $result=mysqli_query($con,$sql_SQRY);
@@ -195,6 +218,7 @@ body,td,th {
                 if(!$result) {
                     echo "ERROR!  NO RESULT RETURNED FROM TABLE<br>";
                     echo mysqli_error($con);
+                    echo "<br/>";
                 }
 
                 // Result processing
@@ -204,7 +228,7 @@ body,td,th {
                         // Outputs the Key # (linked) for a single row.
                         echo "<b><i>Key#: ".$row["key"]."</b></i><br>" ;
                         // Outputs the Title and year for a single row.
-                        echo "<b>Title:</b>". $row["title"]."   ".$row["year"] ."<br><br>";
+                        echo "<b>Title:  </b>". $row["title"]."   ".$row["year"] ."<br><br>";
                         // Outputs the abstract information.
                         echo nl2br(rtrim(ltrim($row["abstract"])))."<br>";
                         // Output PDF information (may need a conditional?)
@@ -234,11 +258,11 @@ body,td,th {
                       <td>&nbsp;</td>
                     </tr>
                     <tr>
-                      <td height="466">&nbsp;</td>
+                      <td height="110">&nbsp;</td>
                       <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
                         <tbody>
                           <tr>
-                            <td height="353" style="font-style: normal; font-family: 'Gill Sans', 'Gill Sans MT', 'Myriad Pro', 'DejaVu Sans Condensed', Helvetica, Arial, sans-serif; font-size: medium;"><p></p></td>
+                            <td height="80" style="font-style: normal; font-family: 'Gill Sans', 'Gill Sans MT', 'Myriad Pro', 'DejaVu Sans Condensed', Helvetica, Arial, sans-serif; font-size: medium;"><p></p></td>
                           </tr>
                           <tr>
                             <td height="66"><p style="font-size: xx-small"><strong>Disclaimer:</strong> Results produced by AgriCoat Search are not representitive of the viewpoints of the creators, or even AgriCoat. In no event will we be liable for any loss or damage including without limitation, indirect or consequential loss or damage, or any loss or damage whatsoever arising from loss of data or profits arising out of, or in connection with, the use of this website. Every effort is made to keep the website up and running smoothly. However, we take no responsibility for, and will not be liable for, the website being temporarily unavailable due to technical issues beyond our control. Use at own risk.</p>
