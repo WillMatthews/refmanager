@@ -59,7 +59,7 @@ for records in root:
                 #print(colored(title,"red"))
                 #print("     " + workingtext)
 
-                newdict[title] = workingtext.replace("\r","n").strip()
+                newdict[title] = workingtext.replace("\r","\n").strip()
 
         count += 1
 
