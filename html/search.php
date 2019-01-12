@@ -3,7 +3,6 @@
 <!-- Adapted from FEUDAL
       VERSION 3 -->
 
-
 <html>
 <head>
 <style type="text/css">
@@ -110,14 +109,10 @@ body,td,th {
 
 
     // SQL VARS
-    include 'config.php';
+    include 'dbconn.php';
 
     // Start Timer
     $time_start=microtime(true);
-
-    //SQL connection launch. If Error output Error Message
-    $con=mysqli_connect($dbhost,$user,$pass,$dbname);//code hangs here???
-    //$con = ""; // temporary
 
     if(!$con) {
         echo " ERROR. Could not connect to database. Firewall problem?";
