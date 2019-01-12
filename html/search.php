@@ -110,11 +110,8 @@ body,td,th {
 
 
     // SQL VARS
-    $dbhost="192.168.1.6";
-    $user="will";
-    $pass="will";
-    $dbname="agricoat";
-    
+    include 'config.php';
+
     // Start Timer
     $time_start=microtime(true);
 
@@ -124,7 +121,7 @@ body,td,th {
 
     if(!$con) {
         echo " ERROR. Could not connect to database. Firewall problem?";
-        echo "<br>".mysqli_connect_errno() . ":" . mysqli_connect_error();
+        echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
     } else {
     
         // gets _GET info
@@ -145,7 +142,7 @@ body,td,th {
                 $order=mysqli_real_escape_string($con,$order);
 
                 // Heading Output
-                echo "<b>Search Results:<br></b>";
+                echo "<b>Search Results:<br/></b>";
 
                 // User Order Request data - manipulates SQL Search
                 if($order == "kd"){
@@ -158,7 +155,7 @@ body,td,th {
                         $ordercode = "`year` ASC";
                 } else {
                     // Catch people fiddling and tell them to back down.
-                    echo "<br> <b> STOP TRYING TO BREAK OUR STUFF! </b> <br>";
+                    echo "<br/> <b> STOP TRYING TO BREAK OUR STUFF! </b> <br/>";
                     exit();
                 }
 
@@ -212,11 +209,11 @@ body,td,th {
                 } else {
                     echo " hits for the search: ";
                 }
-                echo "<i>'".$query."'</i>  in ".$runtime_1." seconds<br><br><br>";
+                echo "<i>'".$query."'</i>  in ".$runtime_1." seconds<br/><br/><br/>";
 
                 // Displays error if we get no result.
                 if(!$result) {
-                    echo "ERROR!  NO RESULT RETURNED FROM TABLE<br>";
+                    echo "ERROR!  NO RESULT RETURNED FROM TABLE<br/>";
                     echo mysqli_error($con);
                     echo "<br/>";
                 }
@@ -224,16 +221,23 @@ body,td,th {
                 // Result processing
                 if ($rowcount  > 0) {
                     // Output data of each row
-                    while($row=mysqli_fetch_assoc($result)) {
-                        // Outputs the Key # (linked) for a single row.
-                        echo "<b><i>Key#: ".$row["key"]."</b></i><br>" ;
+                        while($row=mysqli_fetch_assoc($result)) {
+                        // check BLOB for pdf presence:
+                        if ( !empty( $row["pdf"] ) ) {
+                            $imout = "<a href='getpdf.php?record=". $row["id"] ."' target='_blank'><img src='static/pdf_icon.png' height='42' width='42'></a>";
+                        } else {
+                            $imout = "<img src='static/nopdf_icon.png' height='42' width='42'>";
+                        }
+
+                        // Outputs the Key # (linked) for a single row.  
+                        echo "<b><i>Key#: ".$row["key"]."</b></i> " . $imout .  "<br/>" ;
                         // Outputs the Title and year for a single row.
-                        echo "<b>Title:  </b>". $row["title"]."   ".$row["year"] ."<br><br>";
+                        echo "<b>" . $row["title"]."   ".$row["year"] ."</b><br/><br/>";
                         // Outputs the abstract information.
-                        echo nl2br(rtrim(ltrim($row["abstract"])))."<br>";
+                        echo "<i>" . nl2br(rtrim(ltrim($row["abstract"])))."</i><br/>";
                         // Output PDF information (may need a conditional?)
                         //echo "PDF:"
-                        echo "<br><br><br><br>";
+                        echo "<br/><hr><br/>";
                     }
                 } else {
                     echo "No Results";
