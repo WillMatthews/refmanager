@@ -11,6 +11,7 @@ body,td,th {
 
 </head>
 <body>
+<div class="container">
 
 <?php
 $record=$_GET['record'];
