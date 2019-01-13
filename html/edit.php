@@ -132,12 +132,12 @@ if ( !empty( $row["haspdf"] ) ) {
  </div>
 <div class="form-group">
 	<label for="inputAbstract">Abstract</label>
-	<textarea class="form-control" name="abstract">"<?php echo $keywords; ?>"</textarea>
+	<textarea class="form-control" name="abstract"><?php echo $keywords; ?></textarea>
 
 </div>
 <div class="form-group">
 	<label for="inputComments">Comments</label>
-	<textarea class="form-control" name="comments">"<?php echo $comments; ?>"</textarea>
+	<textarea class="form-control" name="comments"><?php echo $comments; ?></textarea>
 
 </div>
 <div class="form-group">
@@ -169,17 +169,20 @@ if ( !empty( $row["haspdf"] ) ) {
 
 
 <form action="edit.php" method="post">
-Key: <input type="text" name="key" value= ><br>
-Title: <input type="text" name="title" value= ><br>
-Author: <input type="text" name="author"  ><br>
-Year: <input type="text" name="year"  ><br>
+Key: <input type="text" name="key" value="<?php echo $key; ?>" ><br>
+Title: <input type="text" name="title" value="<?php echo $title; ?>" ><br>
+Author: <input type="text" name="author" value="<?php echo $author; ?>" ><br>
+Year: <input type="text" name="year" value="<?php echo $year; ?>" ><br>
 Abstract: <input type="text" name="abstract" value="<?php echo $abstract; ?>" ><br>
-Keywords: <input type="text" name="keywords" value= ><br>
-Volume: <input type="text" name="volume" value= ><br>
-Number: <input type="text" name="number"  ><br>
-Pages: <input type="text" name="" value= ><br>
-URL: <input type="text" name="url" value="" ><br>
+Keywords: <input type="text" name="keywords" value="<?php echo $keywords; ?>" ><br>
+Volume: <input type="text" name="volume" value="<?php echo $volume; ?>" ><br>
+Number: <input type="text" name="number" value="<?php echo $number; ?>" ><br>
+Pages: <input type="text" name="pages" value="<?php echo $pages; ?>" ><br>
+URL: <input type="text" name="url" value="<?php echo $url; ?>" ><br>
 Comments: <input type="text" name="comments" value="<?php echo $comments; ?>" ><br>
+<input type="hidden" value="<?php echo $record; ?>" name="id" />
+<input type="submit">
+</form>
 
 <input type="submit">
 </form>
