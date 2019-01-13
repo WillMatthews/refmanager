@@ -106,38 +106,35 @@ if ( !empty( $row["haspdf"] ) ) {
 
 <br/>
 <br/>
-<br/>
-<br/>
-
 <form action="edit.php" method="post">
   <div class="form-row">
     <div class="form-group col-md-3">
       <label for="inputKey">Key</label>
-      <input type="text" class="form-control" name="key" placeholder="Key" value ="<?php echo $key; ?>">
+      <input type="text" class="form-control" name="key" placeholder="Reference key..." value ="<?php echo $key; ?>">
     </div>
     <div class="form-group col-md-9">
       <label for="inputTitle">Title</label>
-      <input type="text" class="form-control" name="title" placeholder="Title" value="<?php echo $title; ?>">
+	  <textarea class="form-control" placeholder="Title of source..." name="title"><?php echo $title; ?></textarea>
     </div>
   </div>
   <div class="form-row">
   <div class="form-group col-md-3">
     <label for="inputYear">Year</label>
-    <input type="text" class="form-control" id="inputAddress2" placeholder="Year" value="<?php echo $year; ?>">
+    <input type="text" class="form-control" id="inputAddress2" placeholder="Year..." value="<?php echo $year; ?>">
   </div>
   <div class="form-group col-md-9">
     <label for="inputAuthor">Author</label>
-    <input type="text" class="form-control" name="author" placeholder="Test" value="<?php echo $author; ?>">
+    <input type="text" class="form-control" name="author" placeholder="Author..." value="<?php echo $author; ?>">
   </div>
  </div>
 <div class="form-group">
 	<label for="inputAbstract">Abstract</label>
-	<textarea class="form-control" name="abstract"><?php echo $keywords; ?></textarea>
+	<textarea class="form-control" placeholder="Abstract / main text of the source..." name="abstract"><?php echo $keywords; ?></textarea>
 
 </div>
 <div class="form-group">
 	<label for="inputComments">Comments</label>
-	<textarea class="form-control" name="comments"><?php echo $comments; ?></textarea>
+	<textarea class="form-control" placeholder="Notable comments... Journal / article etc." name="comments"><?php echo $comments; ?></textarea>
 
 </div>
 <div class="form-group">
@@ -151,40 +148,20 @@ if ( !empty( $row["haspdf"] ) ) {
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputVolume">Volume</label>
-      <input type="text" class="form-control" name="volume" value="<?php echo $volume; ?>">
+      <input type="text" class="form-control" name="volume" placeholder="Volume No." value="<?php echo $volume; ?>">
     </div>
     <div class="form-group col-md-4">
       <label for="inputNumber">Number</label>
-      <input type="text" id="inputState" class="form-control" name="number" value="<?php echo $number; ?>">
+      <input type="text" id="inputState" class="form-control" name="number" placeholder="Number" value="<?php echo $number; ?>">
     </div>
     <div class="form-group col-md-4">
       <label for="inputPages">Pages</label>
-      <input type="text" class="form-control" name="pages" value="<?php echo $pages; ?>">
+      <input type="text" class="form-control" placeholder="Page ranges... e.g. 112-118" name="pages" value="<?php echo $pages; ?>">
     </div>
   </div>
   <input type="hidden" value="<?php echo $record; ?>" name="id" />
 
   <button type="submit" class="btn btn-primary">Submit</button>
-</form>
-
-
-<form action="edit.php" method="post">
-Key: <input type="text" name="key" value="<?php echo $key; ?>" ><br>
-Title: <input type="text" name="title" value="<?php echo $title; ?>" ><br>
-Author: <input type="text" name="author" value="<?php echo $author; ?>" ><br>
-Year: <input type="text" name="year" value="<?php echo $year; ?>" ><br>
-Abstract: <input type="text" name="abstract" value="<?php echo $abstract; ?>" ><br>
-Keywords: <input type="text" name="keywords" value="<?php echo $keywords; ?>" ><br>
-Volume: <input type="text" name="volume" value="<?php echo $volume; ?>" ><br>
-Number: <input type="text" name="number" value="<?php echo $number; ?>" ><br>
-Pages: <input type="text" name="pages" value="<?php echo $pages; ?>" ><br>
-URL: <input type="text" name="url" value="<?php echo $url; ?>" ><br>
-Comments: <input type="text" name="comments" value="<?php echo $comments; ?>" ><br>
-<input type="hidden" value="<?php echo $record; ?>" name="id" />
-<input type="submit">
-</form>
-
-<input type="submit">
 </form>
 
 
