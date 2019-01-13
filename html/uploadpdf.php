@@ -28,7 +28,6 @@ if (count($_FILES) > 0) {
 ?>
 
 <HTML>
-Form takes a file, sends it via POST, which converts to string and returns the original file through headers.
 <br/>
 2MB limit (as set by php.ini)
 <br/>

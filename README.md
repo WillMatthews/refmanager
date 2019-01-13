@@ -7,18 +7,23 @@ A more usable alternative to EndNote, made for AgriCoat Ltd as FOSS, to organise
 * search page (not tied to DB yet)
 * XML parser (not populating DB yet)
 * list of missing entries
+* DB functional
+* DB Populated
+* PDF upload/download functional
+* Natural Language search
 
 ### Next targets are:
-* get DB working!
-* populate DB!
-* make search page work with DB!
+* 'Add Record' Page
+* 'Edit Record' Page
+* 'Errors' Page
 
 ### Todos:
 - [ ] "Add Record" page (suggest successor of max of keys)
+  - [x] "Add PDF" page
 - [ ] "Edit Record" page (remove record)
-- [ ] "Search"
+- [x] "Search"
   - [x] Sort by record number, date (sort by author?)
-  - [ ] Search by keyword, abstracts, titles, record number and/or author
+  - [x] Search by keyword, abstracts, titles, record number and/or author
 - [ ] 'errors' page
   - [ ] highlight missing PDFs
   - [ ] highlight spelling errors?
