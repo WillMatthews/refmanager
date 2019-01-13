@@ -1,3 +1,16 @@
+<html>
+<head>
+<style type="text/css">
+body,td,th {
+    font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
+    text-align: center;
+    font-size: medium;
+}
+</style>
+</head>
+<body>
+
+
 <?php
 // REMEMBER TO USE `addslashes` for the upload form!
 $record=$_GET['record'];
@@ -9,7 +22,7 @@ $result=mysqli_query($con,$sql_SQRY);
 $row=mysqli_fetch_assoc($result);
 
 echo "<h1>Add a PDF for Record: " . $row['key'] . "</h1>";
-if ($row['haspdf']) {
+if ($row['haspdf'] or count($_FILES > 0)) {
         echo "<h2>PDF Present, Upload will replace existing PDF.</h2>";
 } else {
         echo "<h2>No PDF Present, Upload will add a PDF.</h2>";
@@ -25,9 +38,11 @@ if (count($_FILES) > 0) {
         echo mysqli_error($con)."<br/><br/>";
         }
 }
+
+mysqli_close($con);
+
 ?>
 
-<HTML>
 <br/>
 2MB limit (as set by php.ini)
 <br/>

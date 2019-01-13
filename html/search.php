@@ -111,6 +111,14 @@ body,td,th {
 // CHECK INDENTING! I think it is very fishy...
 
 
+function highlight($text, $words) {
+    preg_match_all('~\w+~', $words, $m);
+    if(!$m)
+        return $text;
+    $re = '~\\b(' . implode('|', $m[0]) . ')\\b~i';
+    return preg_replace($re, '<mark>$0</mark>', $text);
+}
+
     // SQL VARS
     include 'dbconn.php';
 
@@ -164,9 +172,33 @@ body,td,th {
                 //  N A T U R A L   L A N G U A G E   S E A R C H
                 // Check if $query is only digits - if it is then add to $sql_SQRY a search for the number column
                 if(ctype_digit($query)){
-                    $sql_SQRY="SELECT * FROM `library` WHERE `key` LIKE ".$query.";";
+                    $sql_SQRY="SELECT library.`id`,
+    library.`key`,
+    library.`author`,
+    library.`year`,
+    library.`abstract`,
+    library.`keywords`,
+    library.`volume`,
+    library.`number`,
+    library.`pages`,
+    library.`url`,
+    library.`comments`,
+    library.`title`,
+    library.`haspdf` FROM `library` WHERE `key` LIKE ".$query.";";
                 } else {
-                    $sql_SQRY="SELECT * FROM `library` WHERE MATCH (comments,abstract,keywords,title) AGAINST ('" .  $query . "' IN NATURAL LANGUAGE MODE);";
+                    $sql_SQRY="SELECT library.`id`,
+    library.`key`,
+    library.`author`,
+    library.`year`,
+    library.`abstract`,
+    library.`keywords`,
+    library.`volume`,
+    library.`number`,
+    library.`pages`,
+    library.`url`,
+    library.`comments`,
+    library.`title`,
+    library.`haspdf` FROM `library` WHERE MATCH (comments,abstract,keywords,title) AGAINST ('" .  $query . "' IN NATURAL LANGUAGE MODE);";
                 }
 
 
@@ -225,7 +257,7 @@ body,td,th {
                     // Output data of each row
                         while($row=mysqli_fetch_assoc($result)) {
                         // check BLOB for pdf presence:
-                        if ( !empty( $row["pdf"] ) ) {
+                        if ( !empty( $row["haspdf"] ) ) {
                             $imout="<a href='getpdf.php?record=". $row["id"] ."' target='_blank'><img src='static/pdf_icon.png' height='35'></a>";
                         } else {
                             //$imout = "<img src='static/nopdf_icon.png' height='42' width='42'>";
@@ -236,10 +268,10 @@ body,td,th {
                         // Outputs the Key # (linked) for a single row.  
                         echo "<b><i>Key#: ".$row["key"]."</b></i>    " . $imout ."   " . $editbtn .  "<br/>" ;
                         // Outputs the Title and year for a single row.
-                        echo "<b>" . $row["title"]."</b><br/>";
+                        echo "<b>" . highlight($row["title"],$query)."</b><br/>";
                         echo "<u><i>" . $row["author"]."   ".$row["year"] ."</i></u><br/><br/>";
                         // Outputs the abstract information.
-                        echo "<i>" . nl2br(rtrim(ltrim($row["abstract"])))."</i><br/>";
+                        echo "<i>" . highlight(nl2br(rtrim(ltrim($row["abstract"]))),$query)."</i><br/>";
                         // Output PDF information (may need a conditional?)
                         //echo "PDF:"
                         echo "<br/><hr><br/>";

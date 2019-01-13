@@ -1,3 +1,14 @@
+<html>
+<head>
+<style type="text/css">
+body,td,th {
+    font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
+    text-align: center;
+    font-size: medium;
+}
+</style>
+</head>
+<body>
 
 <?php
 $record=$_GET['record'];
@@ -13,7 +24,19 @@ if(!$con) {
     echo " ERROR. Could not connect to database. Firewall problem?";
     echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
 } else {
-    $sql_SQRY="SELECT * FROM `library` WHERE `id` IS " . $record . ";";
+    $sql_SQRY="SELECT library.`id`,
+    library.`key`,
+    library.`author`,
+    library.`year`,
+    library.`abstract`,
+    library.`keywords`,
+    library.`volume`,
+    library.`number`,
+    library.`pages`,
+    library.`url`,
+    library.`comments`,
+    library.`title`,
+    library.`haspdf` FROM `library` WHERE `id` LIKE " . $record . ";";
 }
 
 // run QUERY and then fetch ROW from RESULT
@@ -40,4 +63,32 @@ $comments=$row['comments'];
 $key=$row['key'];
 $haspdf=$row['haspdf'];
 
+mysqli_close($con);
+
+if ( !empty( $row["haspdf"] ) ) {
+    echo "<a href='getpdf.php?record=". $row["id"] ."' target='_blank'>View PDF</a> <br/>";
+    echo "<a href='uploadpdf.php?record=". $row["id"] ."' target='_blank'>Upload New PDF</a>";
+} else {
+    echo "<a href='uploadpdf.php?record=". $row["id"] ."' target='_blank'>Add PDF</a>";
+} 
+
 ?>
+
+<!-- PUT THE FORM HERE!
+key
+title
+author
+year
+abstract
+keywords
+volume
+number
+pages
+url
+comments
+-->
+
+
+
+</body>
+</html>
