@@ -39,7 +39,7 @@ body,td,th {
                     <tr>
                       <td width="20%" height="144">&nbsp;</td>
                       <td width="60%"><p class="s_font"><strong><em style="font-size: 64px">AgriCoat Library</em></strong></p>
-                        <p class="s_font" style="font-size: 16px"><a href="search.php">Search</a> • <a href="add.php">Add Record</a> • <a href="edit.php" target="_blank">Edit Record</a> • <a href="errors.php">Errors</a></p></td>
+                        <p class="s_font" style="font-size: 16px"><a href="search.php">Search</a> • <a href="add.php">Add Record</a> • <a href="errors.php">Errors</a></p></td>
                       <td width="20%">&nbsp;</td>
                     </tr>
                     <tr>
@@ -62,8 +62,10 @@ body,td,th {
                             <td>&nbsp;</td>
                           </tr>
                           <tr>
-                            <td height="86">&nbsp;</td>
+                            <td height="0">&nbsp;</td>
                             <td style="text-align: center"><p><br />
+                              Ordered by Relevance.
+                             <!--
                               Choose how data should be presented:</p>
                               <table width="165" align="center">
                                 <tr>
@@ -87,6 +89,7 @@ body,td,th {
                                     Date Ascending</label></td>
                                 </tr>
                               </table>
+                              -->
                               <p></p></td>
                             <td>&nbsp;</td>
                           </tr>
@@ -139,7 +142,8 @@ body,td,th {
                 // Heading Output
                 echo "<b>Search Results:<br/></b>";
 
-                // User Order Request data - manipulates SQL Search
+		/*
+                // User Order Request data - manipulates SQL Search (DO NOT USE FOR NATURAL LANGAUGE)
                 if($order == "kd"){
                     $ordercode = "`key` DESC";
                 } elseif($order == "ka"){
@@ -153,20 +157,23 @@ body,td,th {
                     echo "<br/> <b> STOP TRYING TO BREAK OUR STUFF! </b> <br/>";
                     exit();
                 }
+		*/
 
+
+                // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                //  N A T U R A L   L A N G U A G E   S E A R C H
                 // Check if $query is only digits - if it is then add to $sql_SQRY a search for the number column
                 if(ctype_digit($query)){
-                    $numstat="OR num LIKE ".$query;
+                    $sql_SQRY="SELECT * FROM `library` WHERE `key` LIKE ".$query.";";
                 } else {
-                    $numstat="";
+                    $sql_SQRY="SELECT * FROM `library` WHERE MATCH (comments,abstract,keywords,title) AGAINST ('" .  $query . "' IN NATURAL LANGUAGE MODE);";
                 }
 
 
                 // S E L E C T   S I N G L E   W O R D   Q U E R Y
                 // ===========================================================
-                $query = "'%" . $query . "%'";
-                $sql_SQRY="SELECT * FROM `library` WHERE (`keywords` LIKE " . $query . " OR `title` LIKE " . $query . " OR `abstract` LIKE " . $query . " OR `key` LIKE " . $query . " OR `author` LIKE " . $query . " ) ORDER BY " . $ordercode . ";";
-
+                // $query = "'%" . $query . "%'";
+                // $sql_SQRY="SELECT * FROM `library` WHERE (`keywords` LIKE " . $query . " OR `title` LIKE " . $query . " OR `abstract` LIKE " . $query . " OR `key` LIKE " . $query . " OR `author` LIKE " . $query . " ) ORDER BY " . $ordercode . ";";
 
 
                 // S E L E C T   A L L   Q U E R Y
@@ -219,15 +226,18 @@ body,td,th {
                         while($row=mysqli_fetch_assoc($result)) {
                         // check BLOB for pdf presence:
                         if ( !empty( $row["pdf"] ) ) {
-                            $imout = "<a href='getpdf.php?record=". $row["id"] ."' target='_blank'><img src='static/pdf_icon.png' height='42' width='42'></a>";
+                            $imout="<a href='getpdf.php?record=". $row["id"] ."' target='_blank'><img src='static/pdf_icon.png' height='35'></a>";
                         } else {
-                            $imout = "<img src='static/nopdf_icon.png' height='42' width='42'>";
+                            //$imout = "<img src='static/nopdf_icon.png' height='42' width='42'>";
+                            $imout="<a href='uploadpdf.php?record=". $row["id"] ."' target='_blank'><img src='static/nopdf_icon.png' height='35'></a>";
                         }
+                        $editbtn="<a href='edit.php?record=".$row["id"]."' target='_blank'><img src='static/edit.png' height='20'></a>";
 
                         // Outputs the Key # (linked) for a single row.  
-                        echo "<b><i>Key#: ".$row["key"]."</b></i> " . $imout .  "<br/>" ;
+                        echo "<b><i>Key#: ".$row["key"]."</b></i>    " . $imout ."   " . $editbtn .  "<br/>" ;
                         // Outputs the Title and year for a single row.
-                        echo "<b>" . $row["title"]."   ".$row["year"] ."</b><br/><br/>";
+                        echo "<b>" . $row["title"]."</b><br/>";
+                        echo "<u><i>" . $row["author"]."   ".$row["year"] ."</i></u><br/><br/>";
                         // Outputs the abstract information.
                         echo "<i>" . nl2br(rtrim(ltrim($row["abstract"])))."</i><br/>";
                         // Output PDF information (may need a conditional?)

@@ -25,6 +25,7 @@ if(!$result){
   exit();
 } elseif(!$row['pdf']) {
   echo "<h1>No PDF Data Found. Please Try Again</h1>";
+  exit();
 } else {
   echo "<h1>Obtaining your file...</h1>";
 }
