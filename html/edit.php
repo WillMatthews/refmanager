@@ -13,16 +13,42 @@ body,td,th {
 <?php
 $record=$_GET['record'];
 
+
+$update=False;
 if(!$record){
-echo "<h1>No ID Data, Please Try Again.</h1>";
-exit();
+  $record=$_POST['id'];
+  $key=$_POST['key'];
+  $author=$_POST['author'];
+  $year=$_POST['year'];
+  $abstract=$_POST['abstract'];
+  $keywords=$_POST['keywords'];
+  $volume=$_POST['volume'];
+  $number=$_POST['number'];
+  $pages=$_POST['pages'];
+  $url=$_POST['url'];
+  $comments=$_POST['comments'];
+  $title=$_POST['title'];
+
+
+//escape all of these! and then put quotes
+
+  echo $record;
+  echo "<h1>Editing Record...</h1>";
+$sql_SQRY= "UPDATE `library` SET `key` = ". $key.", `author` = ". $author. ", `year` = ". $year.", `abstract` = ".$abstract.", `keywords` = ".$keywords.", `volume` = ".$volume.", `number` = ".$number.", `pages` = ".$pages.", `url` = ".$url.", `comments` = ".$comments.", `title` = ".$title." WHERE `id` = ". $record .";";
+  $update=True;
 }
 
 include 'dbconn.php';
 
 if(!$con) {
-    echo " ERROR. Could not connect to database. Firewall problem?";
+    echo "ERROR. Could not connect to database. Firewall problem?";
     echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
+} elseif($update) {
+echo $sql_SQRY;
+  mysqli_query($con,$sql_SQRY);
+  mysqli_commit($con);
+  mysqli_close($con);
+  exit();
 } else {
     $sql_SQRY="SELECT library.`id`,
     library.`key`,
@@ -48,6 +74,7 @@ if(!$result){
   exit();
 } else {
   echo "<h1>Editing Record: ".$row['key'] . "</h1>";
+  echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
 }
 
 $title=$row['title'];
@@ -74,19 +101,26 @@ if ( !empty( $row["haspdf"] ) ) {
 
 ?>
 
-<!-- PUT THE FORM HERE!
-key
-title
-author
-year
-abstract
-keywords
-volume
-number
-pages
-url
-comments
--->
+<br/>
+<br/>
+<br/>
+<br/>
+
+<form action="edit.php" method="post">
+Key: <input type="text" name="key" value="<?php echo $key; ?>" ><br>
+Title: <input type="text" name="title" value="<?php echo $title; ?>" ><br>
+Author: <input type="text" name="author" value="<?php echo $author; ?>" ><br>
+Year: <input type="text" name="year" value="<?php echo $year; ?>" ><br>
+Abstract: <input type="text" name="abstract" value="<?php echo $abstract; ?>" ><br>
+Keywords: <input type="text" name="keywords" value="<?php echo $keywords; ?>" ><br>
+Volume: <input type="text" name="volume" value="<?php echo $volume; ?>" ><br>
+Number: <input type="text" name="number" value="<?php echo $number; ?>" ><br>
+Pages: <input type="text" name="pages" value="<?php echo $pages; ?>" ><br>
+URL: <input type="text" name="url" value="<?php echo $url; ?>" ><br>
+Comments: <input type="text" name="comments" value="<?php echo $comments; ?>" ><br>
+<input type="hidden" value="<?php echo $record; ?>" name="id" />
+<input type="submit">
+</form>
 
 
 
