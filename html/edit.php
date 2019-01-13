@@ -120,7 +120,7 @@ if ( !empty( $row["haspdf"] ) ) {
   <div class="form-row">
   <div class="form-group col-md-3">
     <label for="inputYear">Year</label>
-    <input type="text" class="form-control" id="inputAddress2" placeholder="Year..." value="<?php echo $year; ?>">
+    <input type="text" class="form-control" name="year" placeholder="Year..." value="<?php echo $year; ?>">
   </div>
   <div class="form-group col-md-9">
     <label for="inputAuthor">Author</label>
@@ -129,7 +129,7 @@ if ( !empty( $row["haspdf"] ) ) {
  </div>
 <div class="form-group">
 	<label for="inputAbstract">Abstract</label>
-	<textarea class="form-control" placeholder="Abstract / main text of the source..." name="abstract"><?php echo $keywords; ?></textarea>
+	<textarea class="form-control" placeholder="Abstract / main text of the source..." name="abstract"><?php echo $abstract; ?></textarea>
 
 </div>
 <div class="form-group">
