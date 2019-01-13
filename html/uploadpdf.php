@@ -9,13 +9,20 @@ $result=mysqli_query($con,$sql_SQRY);
 $row=mysqli_fetch_assoc($result);
 
 echo "<h1>Add a PDF for Record: " . $row['key'] . "</h1>";
+if ($row['haspdf']) {
+        echo "<h2>PDF Present, Upload will replace existing PDF.</h2>";
+} else {
+        echo "<h2>No PDF Present, Upload will add a PDF.</h2>";
+}
 
 if (count($_FILES) > 0) {
     if (is_uploaded_file($_FILES['userFile']['tmp_name'])) {
-        $fileData = addslashes(file_get_contents($_FILES['userFile']['tmp_name']));
+        $fileData = base64_encode(file_get_contents($_FILES['userFile']['tmp_name']));
 
-        //$sql = "INSERT INTO database( pdfData) VALUES('{$imgData}')";
+        $sql_SQRY = 'UPDATE `library` SET `haspdf` = 1, `pdf` = "'. $fileData . '" WHERE `id` = ' . $record . ';';
+        mysqli_query($con,$sql_SQRY);
 
+        echo mysqli_error($con)."<br/><br/>";
         }
 }
 ?>

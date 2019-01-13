@@ -13,8 +13,10 @@ if(!$con) {
     echo " ERROR. Could not connect to database. Firewall problem?";
     echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
 } else {
-    $sql_SQRY="SELECT * FROM `library` WHERE `id` IS " . $record . ";";
+    $sql_SQRY="SELECT * FROM `library` WHERE `id` LIKE " . $record . ";";
 }
+
+//echo "<br/><br/><br/>".$sql_SQRY."<br/><br/><br/>";
 
 // run QUERY and then fetch ROW from RESULT
 $result=mysqli_query($con,$sql_SQRY);
@@ -27,7 +29,8 @@ if(!$result){
   echo "<h1>No PDF Data Found. Please Try Again</h1>";
   exit();
 } else {
-  echo "<h1>Obtaining your file...</h1>";
+    echo "<h1>Obtaining your file...</h1>";
+    $pdfDoc = base64_decode($row['pdf']);
 }
 
 // DOWNLOAD FILE
@@ -38,6 +41,7 @@ header('Cache-Control: must-revalidate');
 header('Content-Length: ' . strlen($row['pdf']));
 header('Connection: close');
 
-echo stripslashes($row['pdf']);
+echo ($pdfDoc);
+//echo ($row['pdf']);
 
 ?>
