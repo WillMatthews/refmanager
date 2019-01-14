@@ -86,7 +86,6 @@ if($key){
   $result=mysqli_query($con,$sql_SQRY);
   $row=mysqli_fetch_array($result);
   echo "<h1>Add a Record</h1>";
-  echo $row[0];
   $newKey = $row[0] + 1;
 }
 ?>

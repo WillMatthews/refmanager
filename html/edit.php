@@ -162,7 +162,7 @@ if ( !empty( $row["haspdf"] ) ) {
   <input type="hidden" value="<?php echo $record; ?>" name="id" />
 
   <button type="submit" class="btn btn-primary">Submit</button>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
 </form>
 
 
