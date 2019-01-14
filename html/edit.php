@@ -19,7 +19,7 @@ $record=$_GET['record'];
 
 $update=False;
 if(!$record){
-  $record=  addslashes($_POST['id']);
+  $record=   addslashes($_POST['id']);
   $key=      addslashes($_POST['key']);
   $author=   addslashes($_POST['author']);
   $year=     addslashes($_POST['year']);
@@ -47,11 +47,11 @@ if(!$con) {
     echo "ERROR. Could not connect to database. Firewall problem?";
     echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
 } elseif($update) {
-    echo $sql_SQRY;
     mysqli_query($con,$sql_SQRY);
     mysqli_commit($con);
     echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
     mysqli_close($con);
+    header('Location: search.php?query='.$key);
     exit();
 } else {
     $sql_SQRY="SELECT library.`id`,
@@ -78,21 +78,20 @@ if(!$result){
   exit();
 } else {
   echo "<h1>Editing Record: ".$row['key'] . "</h1>";
-  //echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
 }
 
-$title=$row['title'];
-$abstract=$row['abstract'];
-$author=$row['author'];
-$year=$row['year'];
-$keywords=$row['keywords'];
-$volume=$row['volume'];
-$number=$row['number'];
-$pages=$row['pages'];
-$url=$row['url'];
-$comments=$row['comments'];
-$key=$row['key'];
-$haspdf=$row['haspdf'];
+$title=     $row['title'];
+$abstract=  $row['abstract'];
+$author=    $row['author'];
+$year=      $row['year'];
+$keywords=  $row['keywords'];
+$volume=    $row['volume'];
+$number=    $row['number'];
+$pages=     $row['pages'];
+$url=       $row['url'];
+$comments=  $row['comments'];
+$key=       $row['key'];
+$haspdf=    $row['haspdf'];
 
 mysqli_close($con);
 
@@ -162,6 +161,7 @@ if ( !empty( $row["haspdf"] ) ) {
   </div>
   <input type="hidden" value="<?php echo $record; ?>" name="id" />
 
+  <button type="submit" class="btn btn-primary">Submit</button>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
