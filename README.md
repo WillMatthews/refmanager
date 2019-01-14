@@ -4,23 +4,19 @@ A more usable alternative to EndNote, made for AgriCoat Ltd as FOSS, to organise
 ## Work in Progress...
 
 ### So far we have:
-* search page (not tied to DB yet)
-* XML parser (not populating DB yet)
-* list of missing entries
-* DB functional
-* DB Populated
-* PDF upload/download functional
-* Natural Language search
+* minimum viable product (search, add, edit, pdf handling)
 
 ### Next targets are:
-* 'Add Record' Page
-* 'Edit Record' Page
-* 'Errors' Page
+* Add bootstrap CSS to the 'static' directory
+* Add the 'errors' page
+    * check for duplicate numbers
+    * check for missing numbers
+    * check for typos
 
 ### Todos:
-- [ ] "Add Record" page (suggest successor of max of keys)
+- [x] "Add Record" page (suggest successor of max of keys)
   - [x] "Add PDF" page
-- [ ] "Edit Record" page (remove record)
+- [x] "Edit Record" page (remove record)
 - [x] "Search"
   - [x] Sort by record number, date (sort by author?)
   - [x] Search by keyword, abstracts, titles, record number and/or author
