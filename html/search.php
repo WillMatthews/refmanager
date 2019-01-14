@@ -108,9 +108,7 @@ body,td,th {
                       <td style="font-size: 16px"><p><span style="font-size: medium">
 <?php
 
-// CHECK INDENTING! I think it is very fishy...
-
-
+// indenting needs fixing...
 function highlight($text, $words) {
     preg_match_all('~\w+~', $words, $m);
     if(!$m)
@@ -126,13 +124,13 @@ function highlight($text, $words) {
     $time_start=microtime(true);
 
     if(!$con) {
-        echo " ERROR. Could not connect to database. Firewall problem?";
+        echo " ERROR. Could not connect to database.";
         echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
     } else {
     
         // gets _GET info
         $query=$_GET['query'];
-        $order=$_GET['order'];
+        //$order=$_GET['order'];
   
         // $query max and min length - check this
         $max_length = 30;
@@ -150,7 +148,7 @@ function highlight($text, $words) {
                 // Heading Output
                 echo "<b>Search Results:<br/></b>";
 
-		/*
+                /*
                 // User Order Request data - manipulates SQL Search (DO NOT USE FOR NATURAL LANGAUGE)
                 if($order == "kd"){
                     $ordercode = "`key` DESC";
@@ -165,57 +163,44 @@ function highlight($text, $words) {
                     echo "<br/> <b> STOP TRYING TO BREAK OUR STUFF! </b> <br/>";
                     exit();
                 }
-		*/
-
+                */
 
                 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 //  N A T U R A L   L A N G U A G E   S E A R C H
                 // Check if $query is only digits - if it is then add to $sql_SQRY a search for the number column
                 if(ctype_digit($query)){
                     $sql_SQRY="SELECT library.`id`,
-    library.`key`,
-    library.`author`,
-    library.`year`,
-    library.`abstract`,
-    library.`keywords`,
-    library.`volume`,
-    library.`number`,
-    library.`pages`,
-    library.`url`,
-    library.`comments`,
-    library.`title`,
-    library.`haspdf` FROM `library` WHERE `key` LIKE ".$query.";";
+                               library.`key`,
+                               library.`author`,
+                               library.`year`,
+                               library.`abstract`,
+                               library.`keywords`,
+                               library.`volume`,
+                               library.`number`,
+                               library.`pages`,
+                               library.`url`,
+                               library.`comments`,
+                               library.`title`,
+                               library.`haspdf` FROM `library` WHERE `key` LIKE ".$query.";";
                 } else {
                     $sql_SQRY="SELECT library.`id`,
-    library.`key`,
-    library.`author`,
-    library.`year`,
-    library.`abstract`,
-    library.`keywords`,
-    library.`volume`,
-    library.`number`,
-    library.`pages`,
-    library.`url`,
-    library.`comments`,
-    library.`title`,
-    library.`haspdf` FROM `library` WHERE MATCH (comments,abstract,keywords,title) AGAINST ('" .  $query . "' IN NATURAL LANGUAGE MODE);";
+                               library.`key`,
+                               library.`author`,
+                               library.`year`,
+                               library.`abstract`,
+                               library.`keywords`,
+                               library.`volume`,
+                               library.`number`,
+                               library.`pages`,
+                               library.`url`,
+                               library.`comments`,
+                               library.`title`,
+                               library.`haspdf` FROM `library` WHERE MATCH (comments,abstract,keywords,title) AGAINST ('" .  $query . "' IN NATURAL LANGUAGE MODE);";
                 }
 
 
-                // S E L E C T   S I N G L E   W O R D   Q U E R Y
-                // ===========================================================
-                // $query = "'%" . $query . "%'";
-                // $sql_SQRY="SELECT * FROM `library` WHERE (`keywords` LIKE " . $query . " OR `title` LIKE " . $query . " OR `abstract` LIKE " . $query . " OR `key` LIKE " . $query . " OR `author` LIKE " . $query . " ) ORDER BY " . $ordercode . ";";
-
-
-                // S E L E C T   A L L   Q U E R Y
-                // ===========================================================
-                // $query = "'%" . $query . "%'";
-                // $sql_SQRY="SELECT * FROM `library`;";
-
-
-
-                // N E W    F U L L T E X T    Q U E R Y
+                // Nautral Language Search with "relevance score" ordering..
+                // under testing - not finalised yet
                 // ===========================================================
                 // $query = "'" . $query . "'";
                 // $sql_SQRY = "SELECT *,
@@ -225,7 +210,6 @@ function highlight($text, $words) {
                 //             WHERE MATCH (`keywords`,`abstract`,`title`,`author`,`key`) AGAINST (" . $query . ")
                 //             ORDER BY title_relevance DESC, relevance DESC";
                 //
-
 
                 // Runs SQL Query
                 $result=mysqli_query($con,$sql_SQRY);
@@ -270,10 +254,22 @@ function highlight($text, $words) {
                         // Outputs the Title and year for a single row.
                         echo "<b>" . highlight($row["title"],$query)."</b><br/>";
                         echo "<u><i>" . $row["author"]."   ".$row["year"] ."</i></u><br/><br/>";
-                        // Outputs the abstract information.
-                        echo "<i>" . highlight(nl2br(rtrim(ltrim($row["abstract"]))),$query)."</i><br/>";
-                        // Output PDF information (may need a conditional?)
-                        //echo "PDF:"
+                        // Outputs the record information.
+                        if (!empty($row["url"])) {
+                            echo '<a href = "'.$row["url"].'" >'.$row["url"].'</a><br/>';
+                        }
+                        if (!empty($row["abstract"])) {
+                          echo "<i>" . highlight(nl2br(rtrim(ltrim($row["abstract"]))),$query)."</i><br/>";
+                        }
+                        if (!empty($row["keywords"])) {
+                            echo "<font color='green'>".$row["keywords"]."</font>";
+                            echo "<br/>";
+                        }
+                        if (!empty($row["comments"])) {
+                            echo "<font color='blue'>".$row["comments"]."</font>";
+                            echo "<br/>";
+                        }
+
                         echo "<br/><hr><br/>";
                     }
                 } else {

@@ -8,13 +8,11 @@ body,td,th {
 }
 </style>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-
 </head>
 <body>
 <div class="container">
 
 <?php
-
 
 $key=      addslashes($_POST['key']);
 $author=   addslashes($_POST['author']);
@@ -30,9 +28,6 @@ $title=    addslashes($_POST['title']);
 
 include 'dbconn.php';
 if($key){
-
-//escape all of these! and then put quotes
-
   echo "<h1>Adding Record</h1>";
   $sql_SQRY= 'INSERT INTO `library`
           (`key`,
@@ -62,27 +57,25 @@ if($key){
 
 
   if(!$con) {
-    echo "ERROR. Could not connect to database. Firewall problem?";
+    echo "ERROR. Could not connect to database.";
     echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
   } else {
     mysqli_query($con,$sql_SQRY);
     mysqli_commit($con);
     echo mysqli_error($con);
-    echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
     mysqli_close($con);
     header('Location: search.php?query='.$key);
     exit();
   }
 
 } else { // if there is no POST data
-
-  $sql_SQRY="SELECT MAX(`key`) FROM `library`";
   if(!$con){
-    echo "<h1>NO DATABASE CONNECTION!</h1>";
+    echo "<h1>ERROR. Could not connect to database.</h1>";
     echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
     exit();
   }
   // run QUERY and then fetch ROW from RESULT
+  $sql_SQRY="SELECT MAX(`key`) FROM `library`";
   $result=mysqli_query($con,$sql_SQRY);
   $row=mysqli_fetch_array($result);
   echo "<h1>Add a Record</h1>";
@@ -148,7 +141,6 @@ if($key){
 
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
-
 
 </div>
 </body>
