@@ -55,18 +55,18 @@ if(!$con) {
     exit();
 } else {
     $sql_SQRY="SELECT library.`id`,
-    library.`key`,
-    library.`author`,
-    library.`year`,
-    library.`abstract`,
-    library.`keywords`,
-    library.`volume`,
-    library.`number`,
-    library.`pages`,
-    library.`url`,
-    library.`comments`,
-    library.`title`,
-    library.`haspdf` FROM `library` WHERE `id` LIKE " . $record . ";";
+               library.`key`,
+               library.`author`,
+               library.`year`,
+               library.`abstract`,
+               library.`keywords`,
+               library.`volume`,
+               library.`number`,
+               library.`pages`,
+               library.`url`,
+               library.`comments`,
+               library.`title`,
+               library.`haspdf` FROM `library` WHERE `id` LIKE " . $record . ";";
 }
 
 // run QUERY and then fetch ROW from RESULT
@@ -96,10 +96,10 @@ $haspdf=    $row['haspdf'];
 mysqli_close($con);
 
 if ( !empty( $row["haspdf"] ) ) {
-    echo "<a href='getpdf.php?record=". $row["id"] ."' target='_blank'>View PDF</a> <br/>";
-    echo "<a href='uploadpdf.php?record=". $row["id"] ."' target='_blank'>Upload New PDF</a>";
+    echo "<a href='getpdf.php?record=" . $row["id"] . "' target='_blank'>View PDF</a> <br/>";
+    echo "<a href='uploadpdf.php?record=" . $row["id"] . "' target='_blank'>Upload New PDF</a>";
 } else {
-    echo "<a href='uploadpdf.php?record=". $row["id"] ."' target='_blank'>Add PDF</a>";
+    echo "<a href='uploadpdf.php?record=" . $row["id"] . "' target='_blank'>Add PDF</a>";
 } 
 
 ?>

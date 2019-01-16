@@ -53,7 +53,7 @@ body,td,th {
                           </tr>
                           <tr>
                             <td height="35">&nbsp;</td>
-                            <td><input name="query" type="text" autofocus="autofocus" class="Style_1" placeholder="Insert Your Search Term (one word)" size="44" maxlength="35" value="<?php echo isset($_GET['query']) ? $_GET['query'] : '' ?>" ></td>
+                            <td><input name="query" type="text" autofocus="autofocus" class="Style_1" placeholder="Insert Your Search Term (words separated by single spaces)" size="44" maxlength="35" value="<?php echo isset($_GET['query']) ? $_GET['query'] : '' ?>" ></td>
                             <td>&nbsp;</td>
                           </tr>
                           <tr>
@@ -64,32 +64,19 @@ body,td,th {
                           <tr>
                             <td height="0">&nbsp;</td>
                             <td style="text-align: center"><p><br />
-                              Ordered by Relevance.
-                             <!--
                               Choose how data should be presented:</p>
-                              <table width="165" align="center">
+                              <table width="225" align="center">
                                 <tr>
-                                  <td width="157" style="text-align: left"><label>
-                                    <input name="order" type="radio" id="order_0" value="kd"<?php if($_GET['order'] == "kd" OR !$_GET['order']) { print ' checked="checked"'; } ?>>
-                                    Record No Descending</label></td>
+                                  <td width="210" style="text-align: left"><label>
+                                    <input name="order" type="radio" id="order_0" value="un"<?php if($_GET['order'] == "un" OR !$_GET['order']) { print ' checked="checked"'; } ?>>
+                                    Unordered (fast)</label></td>
                                 </tr>
                                 <tr>
                                   <td style="text-align: left"><label>
-                                    <input type="radio" name="order" value="ka" id="order_1"<?php if($_GET['order'] == "ka") { print ' checked="checked"'; } ?>>
-                                    Record No Ascending</label></td>
-                                </tr>
-                                <tr>
-                                  <td style="text-align: left"><label>
-                                    <input name="order" type="radio" id="order_2" value="dd"<?php if($_GET['order'] == "dd") { print ' checked="checked"'; } ?>>
-                                    Date Descending</label></td>
-                                </tr>
-                                <tr>
-                                  <td style="text-align: left"><label>
-                                    <input name="order" type="radio" id="order_3" value="da"<?php if($_GET['order'] == "da") { print ' checked="checked"'; } ?>>
-                                    Date Ascending</label></td>
+                                    <input type="radio" name="order" value="or" id="order_1"<?php if($_GET['order'] == "or") { print ' checked="checked"'; } ?>>
+                                    Ordered by Relevance (slow)</label></td>
                                 </tr>
                               </table>
-                              -->
                               <p></p></td>
                             <td>&nbsp;</td>
                           </tr>
@@ -111,10 +98,18 @@ body,td,th {
 // indenting needs fixing...
 function highlight($text, $words) {
     preg_match_all('~\w+~', $words, $m);
-    if(!$m)
-        return $text;
-    $re = '~\\b(' . implode('|', $m[0]) . ')\\b~i';
+    if(!$m) {
+      return $text;
+    }
+    $re='~\\b(' . implode('|', $m[0]) . ')\\b~i';
     return preg_replace($re, '<mark>$0</mark>', $text);
+}
+
+function addhttp($url) {
+  if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+    $url = "http://" . $url;
+  }
+  return $url;
 }
 
     // SQL VARS
@@ -129,16 +124,16 @@ function highlight($text, $words) {
     } else {
     
         // gets _GET info
-        $query=$_GET['query'];
-        //$order=$_GET['order'];
+        $query=ltrim(rtrim($_GET['query']));
+        $order=$_GET['order'];
   
         // $query max and min length - check this
-        $max_length = 30;
-        $min_length = 0;
+        $max_length=30;
+        $min_length=0;
     
         // run only if query exists (not on page load)
-        if($query){
-            if(strlen($query) >= $min_length AND strlen($query) <= $max_length){ // query length to stop people breaking our page
+        if($query) {
+            if(strlen($query) >= $min_length AND strlen($query) <= $max_length) { // query length to stop people breaking our page
                 // General input sanitation
                 $query=htmlspecialchars($query); 
                 $order=htmlspecialchars($order); 
@@ -168,7 +163,8 @@ function highlight($text, $words) {
                 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 //  N A T U R A L   L A N G U A G E   S E A R C H
                 // Check if $query is only digits - if it is then add to $sql_SQRY a search for the number column
-                if(ctype_digit($query)){
+                if(ctype_digit($query)) {
+
                     $sql_SQRY="SELECT library.`id`,
                                library.`key`,
                                library.`author`,
@@ -182,7 +178,9 @@ function highlight($text, $words) {
                                library.`comments`,
                                library.`title`,
                                library.`haspdf` FROM `library` WHERE `key` LIKE ".$query.";";
+
                 } else {
+                  if($order=="un") {
                     $sql_SQRY="SELECT library.`id`,
                                library.`key`,
                                library.`author`,
@@ -195,7 +193,23 @@ function highlight($text, $words) {
                                library.`url`,
                                library.`comments`,
                                library.`title`,
-                               library.`haspdf` FROM `library` WHERE MATCH (comments,abstract,keywords,title) AGAINST ('" .  $query . "' IN NATURAL LANGUAGE MODE);";
+                               library.`haspdf` FROM `library` WHERE MATCH (comments,abstract,keywords,title,author) AGAINST ('" .  $query . "' IN NATURAL LANGUAGE MODE);";
+
+                  } elseif($order=="or") {
+                      $querypls=str_replace(' ','+',$query);
+                      $sql_SQRY = "SELECT *,
+                                    MATCH (comments,abstract,keywords,title,author) AGAINST ('" . $query . "') AS relevance
+                                FROM `library`
+                                WHERE MATCH (comments,abstract,keywords,title,author) AGAINST ('" . $querypls . "' IN BOOLEAN MODE)
+                                ORDER BY relevance DESC";
+                            //HAVING relevance > 0.2
+                  } else { 
+                    echo "Unrecognized Order Code";
+                    exit();
+                  }
+
+
+
                 }
 
 
@@ -204,12 +218,13 @@ function highlight($text, $words) {
                 // ===========================================================
                 // $query = "'" . $query . "'";
                 // $sql_SQRY = "SELECT *,
-                //                 MATCH (`keywords`,`abstract`,`title`,`author`,`key`) AGAINST (" . $query . ") AS relevance,
-                //                 MATCH (`title`) AGAINST (" . $query . ") AS title_relevance
+                //                 MATCH (comments,abstract,keywords,title,author) AGAINST ('" . $query . "' IN NATURAL LANGUAGE MODE) AS relevance,
+                //                 MATCH (title) AGAINST ('" . $query . "' IN NATURAL LANGUAGE MODE) AS title_relevance
                 //             FROM `library`
-                //             WHERE MATCH (`keywords`,`abstract`,`title`,`author`,`key`) AGAINST (" . $query . ")
+                //             WHERE MATCH (comments,abstract,keywords,title,author) AGAINST ('" . $query . "' IN NATURAL LANGUAGE MODE)
                 //             ORDER BY title_relevance DESC, relevance DESC";
                 //
+
 
                 // Runs SQL Query
                 $result=mysqli_query($con,$sql_SQRY);
@@ -237,11 +252,11 @@ function highlight($text, $words) {
                 }
 
                 // Result processing
-                if ($rowcount  > 0) {
+                if($rowcount > 0) {
                     // Output data of each row
                         while($row=mysqli_fetch_assoc($result)) {
                         // check BLOB for pdf presence:
-                        if ( !empty( $row["haspdf"] ) ) {
+                        if(!empty($row["haspdf"])) {
                             $imout="<a href='getpdf.php?record=". $row["id"] ."' target='_blank'><img src='static/pdf_icon.png' height='35'></a>";
                         } else {
                             //$imout = "<img src='static/nopdf_icon.png' height='42' width='42'>";
@@ -253,20 +268,20 @@ function highlight($text, $words) {
                         echo "<b><i>Key#: ".$row["key"]."</b></i>    " . $imout ."   " . $editbtn .  "<br/>" ;
                         // Outputs the Title and year for a single row.
                         echo "<b>" . highlight($row["title"],$query)."</b><br/>";
-                        echo "<u><i>" . $row["author"]."   ".$row["year"] ."</i></u><br/><br/>";
+                        echo "<u><i>" . highlight($row["author"],$query)."   ".$row["year"] ."</i></u><br/><br/>";
                         // Outputs the record information.
-                        if (!empty($row["url"])) {
-                            echo '<a href = "'.$row["url"].'" >'.$row["url"].'</a><br/>';
+                        if(!empty($row["url"])) {
+                            echo '<a href = "'.addhttp($row["url"]).'" >'.$row["url"].'</a><br/>';
                         }
-                        if (!empty($row["abstract"])) {
+                        if(!empty($row["abstract"])) {
                           echo "<i>" . highlight(nl2br(rtrim(ltrim($row["abstract"]))),$query)."</i><br/>";
                         }
-                        if (!empty($row["keywords"])) {
-                            echo "<font color='green'>".$row["keywords"]."</font>";
+                        if(!empty($row["keywords"])) {
+                            echo "<font color='green'>".highlight($row["keywords"],$query)."</font>";
                             echo "<br/>";
                         }
-                        if (!empty($row["comments"])) {
-                            echo "<font color='blue'>".$row["comments"]."</font>";
+                        if(!empty($row["comments"])) {
+                            echo "<font color='blue'>".highlight($row["comments"],$query)."</font>";
                             echo "<br/>";
                         }
 
@@ -277,17 +292,17 @@ function highlight($text, $words) {
                 }
 
                 // Close SQL connection
-                mysqli_close($con); 
+                mysqli_close($con);
             }
             // Catch when people put in query of bad length and show error message
-            else{ // If query length is less than minimum
+            else { // If query length is less than minimum
                 echo "<b>Your query was rejected due to bad size.</b><br />";
                 echo "Minimum length is ".$min_length;
                 echo "<br />Maximum length is ".$max_length;
             }
             // Displayed result when no search is done. (no $query from $_GET)
         } else {
-        echo "No Search Yet";
+          echo "No Search Yet";
         }
     }
 ?>

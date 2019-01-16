@@ -12,6 +12,8 @@ A more usable alternative to EndNote, made for AgriCoat Ltd as FOSS, to organise
     * check for duplicate numbers
     * check for missing numbers
     * check for typos
+* Centralise all to a config file.
+* Add a 'delete record' method
 
 ### Todos:
 - [x] "Add Record" page (suggest successor of max of keys)
@@ -23,4 +25,26 @@ A more usable alternative to EndNote, made for AgriCoat Ltd as FOSS, to organise
 - [ ] 'errors' page
   - [ ] highlight missing PDFs
   - [ ] highlight spelling errors?
-  - [ ] highlight missing record numbers
+  - [ ] highlight missing record numbersi
+
+### Prerequisites:
+A MySQL server has to be set up with the following fields:
+- id (INT(11), AUTO INCREMENT, UNIQUE)
+- key (INT(10))
+- haspdf (TINYINT(4))
+- pdf (LONGBLOB)
+And the following TEXT fields:
+- title 
+- abstract
+- author
+- comments
+- keywords
+- pages
+- number
+- url
+- volume
+- year
+
+
+
+
