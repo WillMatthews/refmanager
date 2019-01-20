@@ -68,12 +68,12 @@ body,td,th {
                               <table width="225" align="center">
                                 <tr>
                                   <td width="210" style="text-align: left"><label>
-                                    <input name="order" type="radio" id="order_0" value="un"<?php if($_GET['order'] == "un" OR !$_GET['order']) { print ' checked="checked"'; } ?>>
+                                    <input name="order" type="radio" id="order_0" value="un"<?php if (isset($_GET['order'])) {if($_GET['order'] == "un" ) { print ' checked="checked"'; }} else { print ' checked="checked"';} ?>>
                                     Unordered (fast)</label></td>
                                 </tr>
                                 <tr>
                                   <td style="text-align: left"><label>
-                                    <input type="radio" name="order" value="or" id="order_1"<?php if($_GET['order'] == "or") { print ' checked="checked"'; } ?>>
+                                    <input type="radio" name="order" value="or" id="order_1"<?php if (isset($_GET['order'])) {if($_GET['order'] == "or") { print ' checked="checked"'; }} ?>>
                                     Ordered by Relevance (slow)</label></td>
                                 </tr>
                               </table>
