@@ -22,7 +22,7 @@ $result=mysqli_query($con,$sql_SQRY);
 $row=mysqli_fetch_assoc($result);
 
 echo "<h1>Add a PDF for Record: " . $row['key'] . "</h1>";
-if ($row['haspdf'] or count($_FILES > 0)) {
+if ($row['haspdf'] or count($_FILES) > 0) {
         echo "<h2>PDF Present, Upload will replace existing PDF.</h2>";
 } else {
         echo "<h2>No PDF Present, Upload will add a PDF.</h2>";
