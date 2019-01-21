@@ -24,28 +24,34 @@ $row=mysqli_fetch_assoc($result);
 
 echo "<h1>Add a PDF for Record: " . $row['key'] . "</h1>";
 if ($row['haspdf'] or count($_FILES) > 0) {
-        echo "<h2>PDF Present, Upload will replace existing PDF.</h2>";
+  echo "<h2>PDF Present, Upload will replace existing PDF.</h2>";
+  // TODO add logic here to add a button to delete the pdf
+  // 
+  // needed components: 
+  // - SQL to remove a PDF for a certain record and set 'haspdf' to FALSE
+  // - Button to send a GET with a 'delete' option
+  // - logic to delete PDF before main code starts - then refresh page
+
 } else {
-        echo "<h2>No PDF Present, Upload will add a PDF.</h2>";
+  echo "<h2>No PDF Present, Upload will add a PDF.</h2>";
 }
 
 if (count($_FILES) > 0) {
-    if (is_uploaded_file($_FILES['userFile']['tmp_name'])) {
-        $fileData = base64_encode(file_get_contents($_FILES['userFile']['tmp_name']));
+  if (is_uploaded_file($_FILES['userFile']['tmp_name'])) {
+    $fileData = base64_encode(file_get_contents($_FILES['userFile']['tmp_name']));
 
-        $sql_SQRY = 'UPDATE `library` SET `haspdf` = 1, `pdf` = "'. $fileData . '" WHERE `id` = ' . $record . ';';
-        mysqli_query($con,$sql_SQRY);
+    $sql_SQRY = 'UPDATE `library` SET `haspdf` = 1, `pdf` = "'. $fileData . '" WHERE `id` = ' . $record . ';';
+    mysqli_query($con,$sql_SQRY);
 
-        echo mysqli_error($con)."<br/><br/>";
-        }
+    echo mysqli_error($con)."<br/><br/>";
+  }
 }
 
 mysqli_close($con);
-
 ?>
 
 <br/>
-2MB limit (as set by php.ini)
+20MB limit (as set by php.ini)
 <br/>
 <br/>
 <BODY>
