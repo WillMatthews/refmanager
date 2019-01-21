@@ -7,6 +7,7 @@ body,td,th {
     font-size: medium;
 }
 </style>
+<title>Add a PDF</title>
 </head>
 <body>
 
