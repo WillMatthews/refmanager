@@ -13,7 +13,8 @@ A more usable alternative to EndNote, made for AgriCoat Ltd as FOSS, to organise
     * check for missing numbers
     * check for typos
 * Centralise all to a config file.
-* Add a 'delete record' method
+* *URGENT* Add a 'delete record' method
+* *URGENT* Add a 'remove pdf' method
 
 ### Todos:
 - [x] "Add Record" page (suggest successor of max of keys)

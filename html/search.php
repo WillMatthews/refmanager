@@ -123,16 +123,22 @@ function addhttp($url) {
         echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
     } else {
     
-        // gets _GET info
+      // gets _GET info
+      if(isset($_GET['query'])) {
         $query=ltrim(rtrim($_GET['query']));
+      }
+      if(isset($_GET['order'])) {
         $order=$_GET['order'];
-  
+      } else {
+        $order="un";
+      }
+
         // $query max and min length - check this
         $max_length=30;
         $min_length=0;
     
         // run only if query exists (not on page load)
-        if($query) {
+        if(isset($_GET['query'])) {
             if(strlen($query) >= $min_length AND strlen($query) <= $max_length) { // query length to stop people breaking our page
                 // General input sanitation
                 $query=htmlspecialchars($query); 

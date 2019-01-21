@@ -1,18 +1,21 @@
 <?php
-$record=$_GET['record'];
 
-if(!$record){
-echo "<h1>No ID Data, Please Try Again.</h1>";
-exit();
+if(isset($_GET['record'])) {
+  $record=$_GET['record'];
+}
+
+if(!isset($_GET['record'])) {
+  echo "<h1>No ID Data, Please Try Again.</h1>";
+  exit();
 }
 
 include 'dbconn.php';
 
 if(!$con) {
-    echo " ERROR. Could not connect to database. Firewall problem?";
-    echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
+  echo " ERROR. Could not connect to database. Firewall problem?";
+  echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
 } else {
-    $sql_SQRY="SELECT * FROM `library` WHERE `id` LIKE " . $record . ";";
+  $sql_SQRY="SELECT * FROM `library` WHERE `id` LIKE " . $record . ";";
 }
 
 //echo "<br/><br/><br/>".$sql_SQRY."<br/><br/><br/>";

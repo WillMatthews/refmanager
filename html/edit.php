@@ -14,11 +14,14 @@ body,td,th {
 <div class="container">
 
 <?php
-$record=$_GET['record'];
+
+if(isset($_GET['record'])) {
+  $record=$_GET['record'];
+}
 
 
 $update=False;
-if(!$record){
+if(!isset($_GET['record'])){
   $record=   addslashes($_POST['id']);
   $key=      addslashes($_POST['key']);
   $author=   addslashes($_POST['author']);
@@ -37,7 +40,7 @@ if(!$record){
 
   echo $record;
   echo "<h1>Editing Record...</h1>";
-$sql_SQRY= 'UPDATE `library` SET `key` = "'. $key.'", `author` = "'. $author. '", `year` = "'. $year.'", `abstract` = "'.$abstract.'", `keywords` = "'.$keywords.'", `volume` = "'.$volume.'", `number` = "'.$number.'", `pages` = "'.$pages.'", `url` = "'.$url.'", `comments` = "'.$comments.'", `title` = "'.$title.'" WHERE `id` = "'. $record .'";';
+  $sql_SQRY= 'UPDATE `library` SET `key` = "'. $key.'", `author` = "'. $author. '", `year` = "'. $year.'", `abstract` = "'.$abstract.'", `keywords` = "'.$keywords.'", `volume` = "'.$volume.'", `number` = "'.$number.'", `pages` = "'.$pages.'", `url` = "'.$url.'", `comments` = "'.$comments.'", `title` = "'.$title.'" WHERE `id` = "'. $record .'";';
   $update=True;
 }
 
