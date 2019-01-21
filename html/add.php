@@ -15,7 +15,7 @@ body,td,th {
 
 <?php
 
-if (isset($_POST['key'])) {
+if(isset($_POST['key'])) {
   $key=      addslashes($_POST['key']);
   $author=   addslashes($_POST['author']);
   $year=     addslashes($_POST['year']);

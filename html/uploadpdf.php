@@ -18,16 +18,31 @@ body,td,th {
 
 include 'dbconn.php';
 
-if(isset($_GET['del'])) {
-  $sql_SQRY="UPDATE `library`
-             SET `haspdf`= '0', `pdf`= Null
-             WHERE `id` = ".$_POST['record'].";";
-
-  mysqli_query($con,$sql_SQRY);
-  mysqli_commit($con);
-  header('Location: uploadpdf.php?record='.$_GET['record']);
+if(!$con) {
+  echo " ERROR. Could not connect to database.";
+  echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
   exit();
+} 
+
+
+
+if(isset($_GET['del'])) {
+  if($_GET['del'] == 1) {
+    $sql_SQRY="UPDATE `library`
+               SET `haspdf`= 0, `pdf`= Null
+               WHERE `id` = ".$_GET['record'].";";
+
+    mysqli_query($con,$sql_SQRY);
+    mysqli_commit($con);
+    mysqli_close($con);
+    header('Location: uploadpdf.php?record='.$_GET['record']);
+    exit();
+  }
 }
+
+
+
+
 
 
 $record=$_GET['record'];
@@ -36,6 +51,14 @@ $record=$_GET['record'];
 $sql_SQRY="SELECT * FROM `library` WHERE `id` LIKE ".$record.";";
 $result=mysqli_query($con,$sql_SQRY);
 $row=mysqli_fetch_assoc($result);
+
+if(!$result) {
+    echo "ERROR!  NO RESULT RETURNED FROM TABLE<br/>";
+    echo mysqli_error($con);
+    exit();
+}
+
+
 
 echo "<h1>Add a PDF for Record: " . $row['key'] . "</h1>";
 if ($row['haspdf'] or count($_FILES) > 0) {
@@ -53,10 +76,11 @@ if (count($_FILES) > 0) {
 
     $sql_SQRY = 'UPDATE `library` SET `haspdf` = 1, `pdf` = "'. $fileData . '" WHERE `id` = ' . $record . ';';
     mysqli_query($con,$sql_SQRY);
+    mysqli_commit($con);
 
-    echo mysqli_error($con)."<br/><br/>";
   }
 }
+echo mysqli_error($con)."<br/><br/>";
 
 mysqli_close($con);
 ?>
@@ -78,7 +102,7 @@ mysqli_close($con);
 <script type="text/javascript">
 var elems = document.getElementsByClassName('confirmation');
     var confirmIt = function (e) {
-              if (!confirm('Are you sure?')) e.preventDefault();
+              if (!confirm('Are you sure you want to delete?')) e.preventDefault();
                   };
 for (var i = 0, l = elems.length; i < l; i++) {
           elems[i].addEventListener('click', confirmIt, false);

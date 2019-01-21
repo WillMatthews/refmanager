@@ -13,7 +13,6 @@ body,td,th {
 </head>
 <body>
 
-
 <div class="container">
 
 <?php
@@ -21,7 +20,6 @@ body,td,th {
 if(isset($_GET['record'])) {
   $record=$_GET['record'];
 }
-
 
 $update=False;
 if(!isset($_GET['record'])){
@@ -101,9 +99,9 @@ $haspdf=    $row['haspdf'];
 
 mysqli_close($con);
 
-if ( !empty( $row["haspdf"] ) ) {
+if(!empty($row["haspdf"])) {
     echo "<a href='getpdf.php?record=" . $row["id"] . "' target='_blank'>View PDF</a> <br/>";
-    echo "<a href='uploadpdf.php?record=" . $row["id"] . "' target='_blank'>Upload New PDF</a>";
+    echo "<a href='uploadpdf.php?record=" . $row["id"] . "' target='_blank'>Upload New PDF / Delte PDF</a>";
 } else {
     echo "<a href='uploadpdf.php?record=" . $row["id"] . "' target='_blank'>Add PDF</a>";
 } 
@@ -170,22 +168,17 @@ echo "<br/><br/><a href='delete.php?record=" . $row["id"] . "' class='confirmati
   <button type="submit" class="btn btn-primary">Submit</button>
   <!-- <button type="submit" class="btn btn-primary">Submit</button> -->
 </form>
-
-
 </div>
 
 <script type="text/javascript">
 var elems = document.getElementsByClassName('confirmation');
     var confirmIt = function (e) {
-              if (!confirm('Are you sure?')) e.preventDefault();
+              if (!confirm('Are you sure you want to delete?')) e.preventDefault();
                   };
 for (var i = 0, l = elems.length; i < l; i++) {
           elems[i].addEventListener('click', confirmIt, false);
               }
 </script>
-
-
-
 
 </body>
 </html>

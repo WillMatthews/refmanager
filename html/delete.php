@@ -10,17 +10,19 @@ body,td,th {
 <title>Add a PDF</title>
 </head>
 <body>
-
 <?php
+if(isset($_GET['record'])) {
+  $record=$_GET['record'];
+  include 'dbconn.php';
 
-$record=$_GET['record'];
-include 'dbconn.php';
+  $sql_SQRY="DELETE FROM `library` WHERE `id` = ".$record.";";
+  mysqli_query($con,$sql_SQRY);
+  mysqli_commit($con);
+  mysqli_close($con);
 
-$sql_SQRY="DELETE FROM `library` WHERE `id` = ".$record.";";
-$result=mysqli_query($con,$sql_SQRY);
-$row=mysqli_fetch_assoc($result);
-
-echo "<h1>Record ".$row['key'] ." deleted.</h1>";
-echo "<h2>Close this page to continue.</h2>";
-
+  echo "<h1>Record ".$row['key']." deleted.</h1>";
+  echo "<h2>Close this page to continue.</h2>";
+}
 ?>
+</body>
+</html>
