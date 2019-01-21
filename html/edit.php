@@ -12,6 +12,8 @@ body,td,th {
 
 </head>
 <body>
+
+
 <div class="container">
 
 <?php
@@ -105,7 +107,7 @@ if ( !empty( $row["haspdf"] ) ) {
 } else {
     echo "<a href='uploadpdf.php?record=" . $row["id"] . "' target='_blank'>Add PDF</a>";
 } 
-
+echo "<br/><br/><a href='delete.php?record=" . $row["id"] . "' class='confirmation'  ><font color='red'>Delete Record</font></a>";
 ?>
 
 <br/>
@@ -171,5 +173,19 @@ if ( !empty( $row["haspdf"] ) ) {
 
 
 </div>
+
+<script type="text/javascript">
+var elems = document.getElementsByClassName('confirmation');
+    var confirmIt = function (e) {
+              if (!confirm('Are you sure?')) e.preventDefault();
+                  };
+for (var i = 0, l = elems.length; i < l; i++) {
+          elems[i].addEventListener('click', confirmIt, false);
+              }
+</script>
+
+
+
+
 </body>
 </html>

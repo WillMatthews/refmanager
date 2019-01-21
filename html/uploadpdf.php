@@ -14,8 +14,23 @@ body,td,th {
 
 <?php
 // REMEMBER TO USE `addslashes` for the upload form!
-$record=$_GET['record'];
+
+
 include 'dbconn.php';
+
+if(isset($_GET['del'])) {
+  $sql_SQRY="UPDATE `library`
+             SET `haspdf`= '0', `pdf`= Null
+             WHERE `id` = ".$_POST['record'].";";
+
+  mysqli_query($con,$sql_SQRY);
+  mysqli_commit($con);
+  header('Location: uploadpdf.php?record='.$_GET['record']);
+  exit();
+}
+
+
+$record=$_GET['record'];
 
 // run QUERY and then fetch ROW from RESULT
 $sql_SQRY="SELECT * FROM `library` WHERE `id` LIKE ".$record.";";
@@ -25,12 +40,8 @@ $row=mysqli_fetch_assoc($result);
 echo "<h1>Add a PDF for Record: " . $row['key'] . "</h1>";
 if ($row['haspdf'] or count($_FILES) > 0) {
   echo "<h2>PDF Present, Upload will replace existing PDF.</h2>";
-  // TODO add logic here to add a button to delete the pdf
-  // 
-  // needed components: 
-  // - SQL to remove a PDF for a certain record and set 'haspdf' to FALSE
-  // - Button to send a GET with a 'delete' option
-  // - logic to delete PDF before main code starts - then refresh page
+
+  echo "<br/><br/><a href='uploadpdf.php?record=" . $row["id"] . "&del=1' class='confirmation'  ><font color='red'>Delete PDF</font></a>";
 
 } else {
   echo "<h2>No PDF Present, Upload will add a PDF.</h2>";
@@ -62,5 +73,19 @@ mysqli_close($con);
             value="Submit" class="btnSubmit" />
     </form>
     </div>
+
+
+<script type="text/javascript">
+var elems = document.getElementsByClassName('confirmation');
+    var confirmIt = function (e) {
+              if (!confirm('Are you sure?')) e.preventDefault();
+                  };
+for (var i = 0, l = elems.length; i < l; i++) {
+          elems[i].addEventListener('click', confirmIt, false);
+              }
+</script>
+
+
+
 </BODY>
 </HTML>
