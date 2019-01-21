@@ -11,11 +11,8 @@ body,td,th {
 </head>
 <body>
 
-
 <?php
 // REMEMBER TO USE `addslashes` for the upload form!
-
-
 include 'dbconn.php';
 
 if(!$con) {
@@ -23,8 +20,6 @@ if(!$con) {
   echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
   exit();
 } 
-
-
 
 if(isset($_GET['del'])) {
   if($_GET['del'] == 1) {
@@ -40,11 +35,6 @@ if(isset($_GET['del'])) {
   }
 }
 
-
-
-
-
-
 $record=$_GET['record'];
 
 // run QUERY and then fetch ROW from RESULT
@@ -58,8 +48,6 @@ if(!$result) {
     exit();
 }
 
-
-
 echo "<h1>Add a PDF for Record: " . $row['key'] . "</h1>";
 if ($row['haspdf'] or count($_FILES) > 0) {
   echo "<h2>PDF Present, Upload will replace existing PDF.</h2>";
@@ -70,14 +58,13 @@ if ($row['haspdf'] or count($_FILES) > 0) {
   echo "<h2>No PDF Present, Upload will add a PDF.</h2>";
 }
 
-if (count($_FILES) > 0) {
-  if (is_uploaded_file($_FILES['userFile']['tmp_name'])) {
+if(count($_FILES)>0) {
+  if(is_uploaded_file($_FILES['userFile']['tmp_name'])) {
     $fileData = base64_encode(file_get_contents($_FILES['userFile']['tmp_name']));
 
     $sql_SQRY = 'UPDATE `library` SET `haspdf` = 1, `pdf` = "'. $fileData . '" WHERE `id` = ' . $record . ';';
     mysqli_query($con,$sql_SQRY);
     mysqli_commit($con);
-
   }
 }
 echo mysqli_error($con)."<br/><br/>";
@@ -90,14 +77,13 @@ mysqli_close($con);
 <br/>
 <br/>
 <BODY>
-    <form name="frmImage" enctype="multipart/form-data" action=""
-        method="post" class="frmImageUpload">
-        <label>Upload File:</label><br /> <input name="userFile"
-            type="file" class="inputFile" accept="application/pdf"/> <input type="submit"
-            value="Submit" class="btnSubmit" />
-    </form>
-    </div>
-
+  <form name="frmImage" enctype="multipart/form-data" action=""
+      method="post" class="frmImageUpload">
+      <label>Upload File:</label><br /> <input name="userFile"
+          type="file" class="inputFile" accept="application/pdf"/> <input type="submit"
+          value="Submit" class="btnSubmit" />
+  </form>
+  </div>
 
 <script type="text/javascript">
 var elems = document.getElementsByClassName('confirmation');
@@ -108,8 +94,6 @@ for (var i = 0, l = elems.length; i < l; i++) {
           elems[i].addEventListener('click', confirmIt, false);
               }
 </script>
-
-
 
 </BODY>
 </HTML>
