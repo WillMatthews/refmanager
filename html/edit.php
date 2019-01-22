@@ -50,8 +50,9 @@ if(!isset($_GET['record'])){
 include 'dbconn.php';
 
 if(!$con) {
-    echo "ERROR. Could not connect to database. Firewall problem?";
+    echo "<h1>ERROR. Could not connect to database.</h1>";
     echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
+    exit();
 } elseif($update) {
     mysqli_query($con,$sql_SQRY);
     mysqli_commit($con);

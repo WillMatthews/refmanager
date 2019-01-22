@@ -20,7 +20,7 @@ body,td,th {
 include 'dbconn.php';
 
 if(!$con) {
-  echo " ERROR. Could not connect to database.";
+  echo "<h1>ERROR. Could not connect to database.</h1>";
   echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
   exit();
 } 

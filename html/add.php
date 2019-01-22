@@ -30,6 +30,16 @@ if(isset($_POST['key'])) {
 }
 
 include 'dbconn.php';
+
+
+if(!$con){
+  echo "<h1>ERROR. Could not connect to database.</h1>";
+  echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
+  exit();
+}
+
+
+
 if(isset($_POST['key'])){
   echo "<h1>Adding Record</h1>";
   $sql_SQRY= 'INSERT INTO `library`
@@ -57,26 +67,15 @@ if(isset($_POST['key'])){
           "'. $comments.'",
           "'. $title.'");';
 
-
-
-  if(!$con) {
-    echo "ERROR. Could not connect to database.";
-    echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
-  } else {
-    mysqli_query($con,$sql_SQRY);
-    mysqli_commit($con);
-    echo mysqli_error($con);
-    mysqli_close($con);
-    header('Location: search.php?query='.$key);
-    exit();
-  }
+  mysqli_query($con,$sql_SQRY);
+  mysqli_commit($con);
+  echo mysqli_error($con);
+  mysqli_close($con);
+  header('Location: search.php?query='.$key);
+  exit();
 
 } else { // if there is no POST data
-  if(!$con){
-    echo "<h1>ERROR. Could not connect to database.</h1>";
-    echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
-    exit();
-  }
+
   // run QUERY and then fetch ROW from RESULT
   $sql_SQRY="SELECT MAX(`key`) FROM `library`";
   $result=mysqli_query($con,$sql_SQRY);

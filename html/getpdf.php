@@ -1,3 +1,7 @@
+
+
+<link rel='stylesheet' href='static/bootstrap.css'>
+
 <?php
 
 if(isset($_GET['record'])) {
@@ -12,8 +16,9 @@ if(!isset($_GET['record'])) {
 include 'dbconn.php';
 
 if(!$con) {
-  echo " ERROR. Could not connect to database. Firewall problem?";
+  echo "<h1>ERROR. Could not connect to database.</h1>";
   echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
+  exit();
 } else {
   $sql_SQRY="SELECT * FROM `library` WHERE `id` LIKE " . $record . ";";
 }
