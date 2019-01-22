@@ -117,7 +117,7 @@ echo "<br/><br/><a href='delete.php?record=" . $row["id"] . "' class='confirmati
   <div class="form-row">
     <div class="form-group col-md-3">
       <label for="inputKey">Key</label>
-      <input type="text" class="form-control" name="key" placeholder="Reference key..." value ="<?php echo $key; ?>">
+      <input type="text" class="form-control" name="key" placeholder="Reference Key..." value ="<?php echo $key; ?>" autocomplete="off">
     </div>
     <div class="form-group col-md-9">
       <label for="inputTitle">Title</label>
@@ -127,7 +127,7 @@ echo "<br/><br/><a href='delete.php?record=" . $row["id"] . "' class='confirmati
   <div class="form-row">
   <div class="form-group col-md-3">
     <label for="inputYear">Year</label>
-    <input type="text" class="form-control" name="year" placeholder="Year..." value="<?php echo $year; ?>">
+    <input type="text" class="form-control" name="year" placeholder="Year..." value="<?php echo $year; ?>" autocomplete="off">
   </div>
   <div class="form-group col-md-9">
     <label for="inputAuthor">Author</label>
@@ -136,34 +136,34 @@ echo "<br/><br/><a href='delete.php?record=" . $row["id"] . "' class='confirmati
  </div>
 <div class="form-group">
 	<label for="inputAbstract">Abstract</label>
-	<textarea class="form-control" placeholder="Abstract / main text of the source..." name="abstract"><?php echo $abstract; ?></textarea>
+	<textarea class="form-control" placeholder="Abstract / Source Text..." name="abstract"><?php echo $abstract; ?></textarea>
 
 </div>
 <div class="form-group">
 	<label for="inputComments">Comments</label>
-	<textarea class="form-control" placeholder="Notable comments... Journal / article etc." name="comments"><?php echo $comments; ?></textarea>
+	<textarea class="form-control" placeholder="Notable comments... (Journal / Article etc.)" name="comments"><?php echo $comments; ?></textarea>
 
 </div>
 <div class="form-group">
     <label for="inputURL">URL</label>
-    <input type="text" class="form-control" name="url" placeholder="URL..." value="<?php echo $url; ?>">
+    <input type="text" class="form-control" name="url" placeholder="URL..." value="<?php echo $url; ?>" autocomplete="off">
 </div>
 <div class="form-group">
     <label for="inputAuthor">Keywords</label>
-    <input type="text" class="form-control" name="keywords" placeholder="Keywords..." value="<?php echo $keywords; ?>">
+    <input type="text" class="form-control" name="keywords" placeholder="Keywords..." value="<?php echo $keywords; ?>" autocomplete="off">
 </div>
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputVolume">Volume</label>
-      <input type="text" class="form-control" name="volume" placeholder="Volume No." value="<?php echo $volume; ?>">
+      <input type="text" class="form-control" name="volume" placeholder="Volume No..." value="<?php echo $volume; ?>" autocomplete="off">
     </div>
     <div class="form-group col-md-4">
       <label for="inputNumber">Number</label>
-      <input type="text" id="inputState" class="form-control" name="number" placeholder="Number" value="<?php echo $number; ?>">
+      <input type="text" id="inputState" class="form-control" name="number" placeholder="Number..." value="<?php echo $number; ?>" autocomplete="off">
     </div>
     <div class="form-group col-md-4">
       <label for="inputPages">Pages</label>
-      <input type="text" class="form-control" placeholder="Page ranges... e.g. 112-118" name="pages" value="<?php echo $pages; ?>">
+      <input type="text" class="form-control" placeholder="Page Ranges..." name="pages" value="<?php echo $pages; ?>" autocomplete="off">
     </div>
   </div>
   <input type="hidden" value="<?php echo $record; ?>" name="id" />
