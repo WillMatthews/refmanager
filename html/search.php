@@ -5,6 +5,7 @@
 
 <html>
 <head>
+<!--
 <style type="text/css">
 body,td,th {
     font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
@@ -12,6 +13,9 @@ body,td,th {
     font-size: small;
 }
 </style>
+-->
+<link rel="stylesheet" href="static/bootstrap.css">
+
 <title>AgriCoat Library Search</title>
 <link href="style_std.css" rel="stylesheet" type="text/css">
 <style type="text/css">
@@ -53,7 +57,7 @@ body,td,th {
                           </tr>
                           <tr>
                             <td height="35">&nbsp;</td>
-                            <td><input name="query" type="text" autofocus="autofocus" class="Style_1" placeholder="Insert Your Search Term (words separated by single spaces)" size="44" maxlength="35" value="<?php echo isset($_GET['query']) ? $_GET['query'] : '' ?>" ></td>
+                            <td><input name="query" type="text" autofocus="autofocus" class="Style_1" placeholder="Insert Your Search Term" size="44" maxlength="35" value="<?php echo isset($_GET['query']) ? $_GET['query'] : '' ?>" ></td>
                             <td>&nbsp;</td>
                           </tr>
                           <tr>
@@ -277,7 +281,7 @@ function addhttp($url) {
                         echo "<u><i>" . highlight($row["author"],$query)."   ".$row["year"] ."</i></u><br/><br/>";
                         // Outputs the record information.
                         if(!empty($row["url"])) {
-                            echo '<a href = "'.addhttp($row["url"]).'" >'.$row["url"].'</a><br/>';
+                            echo '<a href = "'.addhttp($row["url"]).'" target="_blank">'.$row["url"].'</a><br/>';
                         }
                         if(!empty($row["abstract"])) {
                           echo "<i>" . highlight(nl2br(rtrim(ltrim($row["abstract"]))),$query)."</i><br/>";

@@ -7,7 +7,7 @@ body,td,th {
     font-size: medium;
 }
 </style>
-<title>Add a PDF</title>
+<title>Deletion Complete</title>
 </head>
 <body>
 <?php
@@ -22,6 +22,7 @@ if(isset($_GET['record'])) {
 
   echo "<h1>Record ".$row['key']." deleted.</h1>";
   echo "<h2>Close this page to continue.</h2>";
+  echo "<script>window.close();</script>";
 }
 ?>
 </body>

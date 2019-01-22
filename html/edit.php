@@ -1,5 +1,6 @@
 <html>
 <head>
+<!--
 <style type="text/css">
 body,td,th {
     font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
@@ -7,8 +8,9 @@ body,td,th {
     font-size: medium;
 }
 </style>
+-->
 <title>Edit a Record</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<link rel="stylesheet" href="static/bootstrap.css">
 
 </head>
 <body>
@@ -101,7 +103,7 @@ mysqli_close($con);
 
 if(!empty($row["haspdf"])) {
     echo "<a href='getpdf.php?record=" . $row["id"] . "' target='_blank'>View PDF</a> <br/>";
-    echo "<a href='uploadpdf.php?record=" . $row["id"] . "' target='_blank'>Upload New PDF / Delte PDF</a>";
+    echo "<a href='uploadpdf.php?record=" . $row["id"] . "' target='_blank'>Upload New PDF / Delete PDF</a>";
 } else {
     echo "<a href='uploadpdf.php?record=" . $row["id"] . "' target='_blank'>Add PDF</a>";
 } 
@@ -173,7 +175,7 @@ echo "<br/><br/><a href='delete.php?record=" . $row["id"] . "' class='confirmati
 <script type="text/javascript">
 var elems = document.getElementsByClassName('confirmation');
     var confirmIt = function (e) {
-              if (!confirm('Are you sure you want to delete?')) e.preventDefault();
+              if (!confirm('Are you sure you want to delete? (This cannot be undone!)')) e.preventDefault();
                   };
 for (var i = 0, l = elems.length; i < l; i++) {
           elems[i].addEventListener('click', confirmIt, false);

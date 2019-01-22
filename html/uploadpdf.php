@@ -1,5 +1,6 @@
 <html>
 <head>
+<!--
 <style type="text/css">
 body,td,th {
     font-family: "Gill Sans", "Gill Sans MT", "Myriad Pro", "DejaVu Sans Condensed", Helvetica, Arial, sans-serif;
@@ -7,10 +8,13 @@ body,td,th {
     font-size: medium;
 }
 </style>
+-->
+<link rel="stylesheet" href="static/bootstrap.css">
+
 <title>Add a PDF</title>
 </head>
 <body>
-
+<center>
 <?php
 // REMEMBER TO USE `addslashes` for the upload form!
 include 'dbconn.php';
@@ -51,7 +55,7 @@ if(!$result) {
 echo "<h1>Add a PDF for Record: " . $row['key'] . "</h1>";
 if ($row['haspdf'] or count($_FILES) > 0) {
   echo "<h2>PDF Present, Upload will replace existing PDF.</h2>";
-
+  echo "<br/><a href='getpdf.php?record=".$row["id"]."' target='_blank'>View PDF</a>";
   echo "<br/><br/><a href='uploadpdf.php?record=" . $row["id"] . "&del=1' class='confirmation'  ><font color='red'>Delete PDF</font></a>";
 
 } else {
@@ -88,12 +92,12 @@ mysqli_close($con);
 <script type="text/javascript">
 var elems = document.getElementsByClassName('confirmation');
     var confirmIt = function (e) {
-              if (!confirm('Are you sure you want to delete?')) e.preventDefault();
+              if (!confirm('Are you sure you want to delete? (This cannot be undone!)')) e.preventDefault();
                   };
 for (var i = 0, l = elems.length; i < l; i++) {
           elems[i].addEventListener('click', confirmIt, false);
               }
 </script>
-
+</center>
 </BODY>
 </HTML>

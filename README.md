@@ -7,12 +7,12 @@ A more usable alternative to EndNote, made for AgriCoat Ltd as FOSS, to organise
 * minimum viable product (search, add, edit, pdf handling)
 
 ### Next targets are:
-* Add bootstrap CSS to the 'static' directory
 * Add the 'errors' page
     * check for duplicate numbers
     * check for missing numbers
     * check for typos
 * Centralise all to a config file.
+
 
 ### Todos:
 - [x] "Add Record" page (suggest successor of max of keys)
