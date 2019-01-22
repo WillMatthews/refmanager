@@ -91,7 +91,7 @@ if(isset($_POST['key'])){
   <div class="form-row">
     <div class="form-group col-md-3">
       <label for="inputKey">Key</label>
-      <input type="text" class="form-control" name="key" placeholder="Reference key..." value ="<?php echo $newKey; ?>">
+      <input type="text" class="form-control" name="key" placeholder="Reference Key..." value ="<?php echo $newKey; ?> autocomplete="off"">
     </div>
     <div class="form-group col-md-9">
       <label for="inputTitle">Title</label>
@@ -101,43 +101,43 @@ if(isset($_POST['key'])){
   <div class="form-row">
   <div class="form-group col-md-3">
     <label for="inputYear">Year</label>
-    <input type="text" class="form-control" name="year" placeholder="Year..." >
+    <input type="text" class="form-control" name="year" placeholder="Year..." autocomplete="off">
   </div>
   <div class="form-group col-md-9">
     <label for="inputAuthor">Author</label>
-    <input type="text" class="form-control" name="author" placeholder="Author..." >
+    <input type="text" class="form-control" name="author" placeholder="Author..." autocomplete="off">
   </div>
  </div>
 <div class="form-group">
 	<label for="inputAbstract">Abstract</label>
-	<textarea class="form-control" placeholder="Abstract / main text of the source..." name="abstract"></textarea>
+	<textarea class="form-control" placeholder="Abstract / Source Text..." name="abstract"></textarea>
 
 </div>
 <div class="form-group">
 	<label for="inputComments">Comments</label>
-	<textarea class="form-control" placeholder="Notable comments... Journal / article etc." name="comments"></textarea>
+	<textarea class="form-control" placeholder="Notable comments... (Journal / Article etc.)" name="comments"></textarea>
 
 </div>
 <div class="form-group">
     <label for="inputURL">URL</label>
-    <input type="text" class="form-control" name="url" placeholder="URL...">
+    <input type="text" class="form-control" name="url" placeholder="URL..." autocomplete="off">
 </div>
 <div class="form-group">
     <label for="inputAuthor">Keywords</label>
-    <input type="text" class="form-control" name="keywords" placeholder="Keywords..." >
+    <input type="text" class="form-control" name="keywords" placeholder="Keywords..." autocomplete="off">
 </div>
   <div class="form-row">
     <div class="form-group col-md-4">
       <label for="inputVolume">Volume</label>
-      <input type="text" class="form-control" name="volume" placeholder="Volume No." >
+      <input type="text" class="form-control" name="volume" placeholder="Volume No..." autocomplete="off">
     </div>
     <div class="form-group col-md-4">
       <label for="inputNumber">Number</label>
-      <input type="text" id="inputState" class="form-control" name="number" placeholder="Number">
+      <input type="text" id="inputState" class="form-control" name="number" placeholder="Number..." autocomplete="off">
     </div>
     <div class="form-group col-md-4">
       <label for="inputPages">Pages</label>
-      <input type="text" class="form-control" placeholder="Page ranges... e.g. 112-118" name="pages" >
+      <input type="text" class="form-control" placeholder="Page Ranges..." name="pages" autocomplete="off">
     </div>
   </div>
 
