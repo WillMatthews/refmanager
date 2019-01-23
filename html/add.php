@@ -91,7 +91,7 @@ if(isset($_POST['key'])){
   <div class="form-row">
     <div class="form-group col-md-3">
       <label for="inputKey">Key</label>
-      <input type="text" class="form-control" name="key" placeholder="Reference Key..." value ="<?php echo $newKey; ?> autocomplete="off"">
+      <input type="text" class="form-control" name="key" placeholder="Reference Key..." value ="<?php echo $newKey; ?>" autocomplete="off">
     </div>
     <div class="form-group col-md-9">
       <label for="inputTitle">Title</label>
