@@ -12,10 +12,6 @@ body,td,th {
     text-align: center;
     font-size: small;
 }
-mark, .mark {
-    padding: 0.2em;
-    background-color: #FFEE5A;
-}
 </style>
 -->
 <link rel="stylesheet" href="static/bootstrap.css">
