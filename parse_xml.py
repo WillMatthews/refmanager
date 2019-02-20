@@ -85,24 +85,18 @@ for i in range(1,max(nums)):
 print("\n")
 print(str(count) + " Entries found in DB file")
 
+conn = pymysql.connect(host='localhost', user="will", passwd="will", db='agricoat', charset = 'utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 
-
-
-conn = pymysql.connect(host='192.168.1.6', user="will", passwd="will", db='agricoat', charset = 'utf8mb4', cursorclass=pymysql.cursors.DictCursor)
 cur = conn.cursor()
 
+sql = """INSERT INTO library (`title`, `author`, `key`, `year`, `abstract`, `keywords`, `volume`, `number`, `pages`, `url`, `comments`) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s);"""
+count2 = 0
+for d in dictList:
+	cur.execute(sql,(d["title"],d["author"],d["key"],d["year"],d["abstract"],d["keywords"],d["volume"],d["number"],d["pages"],d["url"],d["comments"],))
+	conn.commit()
+	count2 += 1
+	print("Inserted value " + str(count2) + " of: "+	str(count))
 
-#sql = """INSERT INTO library (title, author, key, year, abstract, keywords, volume, number, pages, url, comments, pdf) VALUES ("titlehere", "authorhere", "1234", "1997", "this is an abstract, where out paper makes some conclusions","fruit, apple, freshcut, pear","12","1","111-123","","a database demo","");"""
-#sql = "INSERT INTO `library` (`title`, `author`, `key`, `year`, `abstract`, `keywords`) VALUES ('titlehere', 'authorhere', '1234', '1997', 'this is an abstract, where out paper makes some conclusions','fruit, apple, freshcut, pear');"
-# cur.execute(sql)
-#
-# sql = "SELECT * FROM `library`;"
-# cur.execute(sql)
-#
-# for r in cur:
-#     print(r)
-#
-#
-# cur.close()
-# conn.commit()
-# conn.close()
+
+cur.close()
+conn.close()
