@@ -15,10 +15,23 @@ if(isset($_GET['record'])) {
   $record=$_GET['record'];
   include 'dbconn.php';
 
+  $sql_SQRY="SELECT * FROM `library` WHERE `id` = ".$record.";";
+  $result=mysqli_query($con,$sql_SQRY);
+  $row=mysqli_fetch_assoc($result);
+
+
   $sql_SQRY="DELETE FROM `library` WHERE `id` = ".$record.";";
   mysqli_query($con,$sql_SQRY);
+
+  if(!empty($row["haspdf"])) {
+    $myFile = "static/pdfs/" . $row['key'] .".pdf" ;
+    unlink($myFile) or die("Couldn't delete file");
+  }
+
   mysqli_commit($con);
   mysqli_close($con);
+
+
 
   echo "<h1>Record ".$row['key']." deleted.</h1>";
   echo "<h2>Close this page to continue.</h2>";

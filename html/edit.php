@@ -19,6 +19,9 @@ body,td,th {
 
 <?php
 
+include 'dbconn.php';
+
+
 if(isset($_GET['record'])) {
   $record=$_GET['record'];
 }
@@ -43,11 +46,16 @@ if(!isset($_GET['record'])){
 
   echo $record;
   echo "<h1>Editing Record...</h1>";
-  $sql_SQRY= 'UPDATE `library` SET `key` = "'. $key.'", `author` = "'. $author. '", `year` = "'. $year.'", `abstract` = "'.$abstract.'", `keywords` = "'.$keywords.'", `volume` = "'.$volume.'", `number` = "'.$number.'", `pages` = "'.$pages.'", `url` = "'.$url.'", `comments` = "'.$comments.'", `title` = "'.$title.'" WHERE `id` = "'. $record .'";';
+
+  $sql_SQRY="SELECT `id` FROM `library` WHERE `key` = ".$record.";";
+  $result=mysqli_query($con,$sql_SQRY);
+  $row=mysqli_fetch_assoc($result);
+
+
+  $sql_SQRY= 'UPDATE `library` SET `key` = "'. $key.'", `author` = "'. $author. '", `year` = "'. $year.'", `abstract` = "'.$abstract.'", `keywords` = "'.$keywords.'", `volume` = "'.$volume.'", `number` = "'.$number.'", `pages` = "'.$pages.'", `url` = "'.$url.'", `comments` = "'.$comments.'", `title` = "'.$title.'" WHERE `id` = "'. $row["id"] .'";';
   $update=True;
 }
 
-include 'dbconn.php';
 
 if(!$con) {
     echo "<h1>ERROR. Could not connect to database.</h1>";
@@ -73,7 +81,7 @@ if(!$con) {
                library.`url`,
                library.`comments`,
                library.`title`,
-               library.`haspdf` FROM `library` WHERE `id` LIKE " . $record . ";";
+               library.`haspdf` FROM `library` WHERE `key` = " . $record . ";";
 }
 
 // run QUERY and then fetch ROW from RESULT
@@ -103,11 +111,11 @@ $haspdf=    $row['haspdf'];
 mysqli_close($con);
 
 if(!empty($row["haspdf"])) {
-    echo "<a href='getpdf.php?record=" . $row["id"] . "' target='_blank'>View PDF</a> <br/>";
-    echo "<a href='uploadpdf.php?record=" . $row["id"] . "' target='_blank'>Upload New PDF / Delete PDF</a>";
+    echo "<a href='static/pdfs/" . $row["key"] . ".pdf' target='_blank'>View PDF</a> <br/>";
+    echo "<a href='uploadpdf.php?record=" . $row["key"] . "' target='_blank'>Upload New PDF / Delete PDF</a>";
 } else {
-    echo "<a href='uploadpdf.php?record=" . $row["id"] . "' target='_blank'>Add PDF</a>";
-} 
+    echo "<a href='uploadpdf.php?record=" . $row["key"] . "' target='_blank'>Add PDF</a>";
+}
 echo "<br/><br/><a href='delete.php?record=" . $row["id"] . "' class='confirmation'  ><font color='red'>Delete Record</font></a>";
 ?>
 

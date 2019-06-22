@@ -23,26 +23,17 @@ if(!$con) {
   echo "<h1>ERROR. Could not connect to database.</h1>";
   echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
   exit();
-} 
-
-if(isset($_GET['del'])) {
-  if($_GET['del'] == 1) {
-    $sql_SQRY="UPDATE `library`
-               SET `haspdf`= 0, `pdf`= Null
-               WHERE `id` = ".$_GET['record'].";";
-
-    mysqli_query($con,$sql_SQRY);
-    mysqli_commit($con);
-    mysqli_close($con);
-    header('Location: uploadpdf.php?record='.$_GET['record']);
-    exit();
-  }
 }
+
 
 $record=$_GET['record'];
 
 // run QUERY and then fetch ROW from RESULT
-$sql_SQRY="SELECT * FROM `library` WHERE `id` LIKE ".$record.";";
+$sql_SQRY="SELECT `id` FROM `library` WHERE `key` = ".$record.";";
+$result=mysqli_query($con,$sql_SQRY);
+$row=mysqli_fetch_assoc($result);
+
+$sql_SQRY="SELECT * FROM `library` WHERE `id` = ".$row['id'].";";
 $result=mysqli_query($con,$sql_SQRY);
 $row=mysqli_fetch_assoc($result);
 
@@ -52,11 +43,30 @@ if(!$result) {
     exit();
 }
 
+if(isset($_GET['del'])) {
+  if($_GET['del'] == 1) {
+    $sql_SQRY="UPDATE `library`
+               SET `haspdf`= 0
+               WHERE `id` = ".$row['id'].";";
+
+    mysqli_query($con,$sql_SQRY);
+    mysqli_commit($con);
+    mysqli_close($con);
+
+    $myFile = "static/pdfs/" . $row['key'] .".pdf" ;
+    unlink($myFile) or die("Couldn't delete file");
+
+    header('Location: uploadpdf.php?record='.$_GET['record']);
+    exit();
+  }
+}
+
+
 echo "<h1>Add a PDF for Record: " . $row['key'] . "</h1>";
 if ($row['haspdf'] or count($_FILES) > 0) {
   echo "<h2>PDF Present, Upload will replace existing PDF.</h2>";
-  echo "<br/><a href='getpdf.php?record=".$row["id"]."' target='_blank'>View PDF</a>";
-  echo "<br/><br/><a href='uploadpdf.php?record=" . $row["id"] . "&del=1' class='confirmation'  ><font color='red'>Delete PDF</font></a>";
+  echo "<br/><a href='static/pdfs/".$row["key"].".pdf' target='_blank'>View PDF</a>";
+  echo "<br/><br/><a href='uploadpdf.php?record=" . $row["key"] . "&del=1' class='confirmation'  ><font color='red'>Delete PDF</font></a>";
 
 } else {
   echo "<h2>No PDF Present, Upload will add a PDF.</h2>";
@@ -64,11 +74,25 @@ if ($row['haspdf'] or count($_FILES) > 0) {
 
 if(count($_FILES)>0) {
   if(is_uploaded_file($_FILES['userFile']['tmp_name'])) {
-    $fileData = base64_encode(file_get_contents($_FILES['userFile']['tmp_name']));
+    //$fileData = base64_encode(file_get_contents($_FILES['userFile']['tmp_name']));
 
-    $sql_SQRY = 'UPDATE `library` SET `haspdf` = 1, `pdf` = "'. $fileData . '" WHERE `id` = ' . $record . ';';
-    mysqli_query($con,$sql_SQRY);
-    mysqli_commit($con);
+
+    $target_dir = "static/pdfs/";
+    $target_file = $target_dir . $row['key'] . ".pdf";
+
+
+    if (move_uploaded_file($_FILES['userFile']['tmp_name'], $target_file)) {
+        echo "The file ". basename($_FILES['userFile']['name']). " has been uploaded successfully.";
+
+
+        $sql_SQRY = 'UPDATE `library` SET `haspdf` = 1 WHERE `id` = ' . $row['id'] . ';';
+        mysqli_query($con,$sql_SQRY);
+        mysqli_commit($con);
+
+
+    } else {
+        echo "Sorry, there was an error uploading your file.";
+    }
   }
 }
 echo mysqli_error($con)."<br/><br/>";
@@ -83,7 +107,7 @@ mysqli_close($con);
 <BODY>
   <form name="frmImage" enctype="multipart/form-data" action=""
       method="post" class="frmImageUpload">
-      <label>Upload File:</label><br /> <input name="userFile"
+      <label>Upload File:</label><br /> <input name="userFile" id="userFile"
           type="file" class="inputFile" accept="application/pdf"/> <input type="submit"
           value="Submit" class="btnSubmit" />
   </form>

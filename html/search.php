@@ -126,7 +126,7 @@ function addhttp($url) {
         echo " ERROR. Could not connect to database.";
         echo "<br/>".mysqli_connect_errno() . ":" . mysqli_connect_error();
     } else {
-    
+
       // gets _GET info
       if(isset($_GET['query'])) {
         $query=ltrim(rtrim($_GET['query']));
@@ -140,13 +140,13 @@ function addhttp($url) {
         // $query max and min length - check this
         $max_length=30;
         $min_length=0;
-    
+
         // run only if query exists (not on page load)
         if(isset($_GET['query'])) {
             if(strlen($query) >= $min_length AND strlen($query) <= $max_length) { // query length to stop people breaking our page
                 // General input sanitation
-                $query=htmlspecialchars($query); 
-                $order=htmlspecialchars($order); 
+                $query=htmlspecialchars($query);
+                $order=htmlspecialchars($order);
                 $query=mysqli_real_escape_string($con,$query);
                 $order=mysqli_real_escape_string($con,$order);
 
@@ -213,7 +213,7 @@ function addhttp($url) {
                                 WHERE MATCH (comments,abstract,keywords,title,author) AGAINST ('" . $querypls . "' IN BOOLEAN MODE)
                                 ORDER BY relevance DESC";
                             //HAVING relevance > 0.2
-                  } else { 
+                  } else {
                     echo "Unrecognized Order Code";
                     exit();
                   }
@@ -238,7 +238,7 @@ function addhttp($url) {
 
                 // Runs SQL Query
                 $result=mysqli_query($con,$sql_SQRY);
-                
+
                 // Get number of rows, stop timer, calculte runtime & round.
                 $rowcount=mysqli_num_rows($result);
                 $time_stop=microtime(true);
@@ -267,14 +267,14 @@ function addhttp($url) {
                         while($row=mysqli_fetch_assoc($result)) {
                         // check BLOB for pdf presence:
                         if(!empty($row["haspdf"])) {
-                            $imout="<a href='getpdf.php?record=". $row["id"] ."' target='_blank'><img src='static/pdf_icon.png' height='35'></a>";
+                            $imout="<a href='static/pdfs/". $row["key"] .".pdf' target='_blank'><img src='static/pdf_icon.png' height='35'></a>";
                         } else {
                             //$imout = "<img src='static/nopdf_icon.png' height='42' width='42'>";
-                            $imout="<a href='uploadpdf.php?record=". $row["id"] ."' target='_blank'><img src='static/nopdf_icon.png' height='35'></a>";
+                            $imout="<a href='uploadpdf.php?record=". $row["key"] ."' target='_blank'><img src='static/nopdf_icon.png' height='35'></a>";
                         }
-                        $editbtn="<a href='edit.php?record=".$row["id"]."' target='_blank'><img src='static/edit.png' height='20'></a>";
+                        $editbtn="<a href='edit.php?record=".$row["key"]."' target='_blank'><img src='static/edit.png' height='20'></a>";
 
-                        // Outputs the Key # (linked) for a single row.  
+                        // Outputs the Key # (linked) for a single row.
                         echo "<b><i>Key#: ".$row["key"]."</b></i>    " . $imout ."   " . $editbtn .  "<br/>" ;
                         // Outputs the Title and year for a single row.
                         echo "<b>" . highlight($row["title"],$query)."</b><br/>";
